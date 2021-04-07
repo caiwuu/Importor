@@ -3,17 +3,54 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta http-equiv="Content-Type" content="text/html">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="/static/iconfont.css">
-    <title>公司信息化管理系统</title>
-    <link href="/static/css/app.1ace94ea49c099c26fed35757b781968.css" rel="stylesheet">
 </head>
 
 <body>
-    <div id="app"></div>
+    <div id="app">
+    </div>
 </body>
+<script>
+    var exposeObj = { window: { name: "caiwu" } }
+
+    function compileCode(src) {
+        src = `with (exposeObj) { ${src} }`
+        return new Function('exposeObj', src)
+    }
+
+
+    function proxyObj(originObj) {
+        let exposeObj = new Proxy(originObj, {
+            has: (target, key) => {
+                console.log(key);
+                if (["console", "Math", "Date"].indexOf(key) >= 0) {
+                    console.log(target[key]);
+                    return target[key]
+                }
+                if (!target.hasOwnProperty(key)) {
+                    throw new Error(`Illegal operation for key ${key}`)
+                }
+                return target[key]
+            },
+        })
+        return exposeObj
+    }
+
+
+    function createSandbox(src, obj) {
+        let proxy = proxyObj(obj)
+        compileCode(src).call(proxy, proxy) //绑定this 防止this访问window	
+    }
+    const testObj = {
+        value: 1,
+        a: {
+            b: 11
+        }
+    }
+    console.log(testObj.console);
+    with (testObj) {
+        console.log(testObj.console);
+    }
+    createSandbox("value='haha';console.log(console)", testObj)
+</script>
 
 </html>
