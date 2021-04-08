@@ -43,11 +43,6 @@ module.exports = {
       //     '/static': '', // 这个意思就是以api开头的，定向到哪里, 如果你的后边还有路径的话， 会自动拼接上
       //   },
       // },
-      '/': {
-        target: 'http://49.234.27.60/',
-        // target: 'http://127.0.0.1:8080/static/',
-        changeOrigin: true, // 是否改变域名
-      },
     },
     // 下边这个， 如果你是本地自己mock 的话用after这个属性，线上环境一定要干掉
     // after: require("./mock/mock-server.js")
