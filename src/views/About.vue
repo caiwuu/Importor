@@ -13,17 +13,14 @@
 </template>
 <script>
   import axios from 'axios'
-  import importHtml from '@/utils/resourceParser'
   export default {
-    async created() {
-      Object.keys(window).forEach((ele) => {
-        if (!window.__GLOBAL__.initialVariables.includes(ele)) {
-          window.__GLOBAL__.baseVariables[ele] = window[ele]
-          window[ele] = null
-        }
-      })
-      let res = await importHtml('test', { origin: 'http://49.234.27.60' })
-      console.log(res)
+    name: 'ABOUT',
+    data() {
+      return {
+        a: 1,
+      }
+    },
+    created() {
       // fetch("test")
       //   .then((res) => {
       //     return res.text();
@@ -46,21 +43,6 @@
       //       document.body.appendChild(script);
       //     });
       //   });
-    },
-    destroyed() {
-      Array.from(document.querySelectorAll('script')).forEach((ele) => {
-        if (ele.tags === 'ssss') {
-          ele.remove()
-        }
-      })
-      Object.keys(window).forEach((ele) => {
-        if (!window.__GLOBAL__.initialVariables.includes(ele)) {
-          window[ele] = null
-        }
-      })
-      Object.keys(window.__GLOBAL__.baseVariables).forEach((ele) => {
-        window[ele] = window.__GLOBAL__.baseVariables[ele]
-      })
     },
   }
 </script>
