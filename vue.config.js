@@ -13,19 +13,8 @@ module.exports = {
     },
     // 配置代理 （以接口 https://www.easy-mock.com/mock/5ce2a7854c85c12abefbae0b/api 说明）
     proxy: {
-      '/quick': {
-        target: 'http://49.234.27.60/quick',
-        // target: 'http://127.0.0.1:8080/quick',
-        changeOrigin: true, // 是否改变域名
-        ws: true,
-        pathRewrite: {
-          // 路径重写
-          '/quick': '', // 这个意思就是以api开头的，定向到哪里, 如果你的后边还有路径的话， 会自动拼接上
-        },
-      },
       '/test': {
-        target: 'http://49.234.27.60/',
-        // target: 'http://ims.3xdata.cn',
+        target: 'http://ims.3xdata.cn',
         changeOrigin: true, // 是否改变域名
         ws: true,
         pathRewrite: {
@@ -33,9 +22,36 @@ module.exports = {
           '/test': '', // 这个意思就是以api开头的，定向到哪里, 如果你的后边还有路径的话， 会自动拼接上
         },
       },
+      '/static': {
+        target: 'http://ims.3xdata.cn/static/',
+        changeOrigin: true, // 是否改变域名
+        ws: true,
+        pathRewrite: {
+          // 路径重写
+          '/static': '', // 这个意思就是以api开头的，定向到哪里, 如果你的后边还有路径的话， 会自动拼接上
+        },
+      },
+      '/imsNew': {
+        target: 'http://ims.3xdata.cn/imsNew/',
+        changeOrigin: true, // 是否改变域名
+        ws: true,
+        pathRewrite: {
+          // 路径重写
+          '/imsNew': '', // 这个意思就是以api开头的，定向到哪里, 如果你的后边还有路径的话， 会自动拼接上
+        },
+      },
+      '/Test': {
+        target: 'http://49.234.27.60/',
+        // target: 'http://ims.3xdata.cn',
+        changeOrigin: true, // 是否改变域名
+        ws: true,
+        pathRewrite: {
+          // 路径重写
+          '/Test': '', // 这个意思就是以api开头的，定向到哪里, 如果你的后边还有路径的话， 会自动拼接上
+        },
+      },
       '/js': {
         target: 'http://49.234.27.60/js/',
-        // target: 'http://127.0.0.1:8080/static/',
         changeOrigin: true, // 是否改变域名
         ws: true,
         pathRewrite: {

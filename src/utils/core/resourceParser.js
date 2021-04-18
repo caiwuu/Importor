@@ -1,8 +1,6 @@
 import uuid from '@/utils/utils/uuid'
-import createSandbox from '@/utils/sandBox'
 export default async function resourceParser(resources, entry, option, el, ctx) {
   let preLoads, styles, scripts
-  el.appendChild(resources.template)
   preLoads = dealPreloads(resources.preLoads, el)
   styles = await dealStyles(resources.styles, option, el)
   scripts = await dealScripts(resources.scripts)
@@ -23,17 +21,12 @@ function dealScripts(scripts) {
   return Promise.all(promiseList).then((res) => {
     let code
     code = res.join(';\n')
-    // console.log(code)
-    console.log(window)
-    // createSandbox(code, window)
-    Function(code)()
     return code
   })
 }
 function dealStyles(styles, option, el) {
   let styleList = []
   if (!option.cssScope) {
-    let fragment = document.createDocumentFragment()
     styles.forEach((ele) => {
       let style
       if (typeof ele === 'string') {
@@ -43,10 +36,11 @@ function dealStyles(styles, option, el) {
         style = document.createElement('link')
         style = Object.assign(style, ele)
       }
-      styleList.push(style)
-      fragment.appendChild(style)
+      // let fragment = document.createDocumentFragment()
+      // styleList.push(style)
+      // fragment.appendChild(style)
     })
-    document.head.appendChild(fragment)
+    // document.head.appendChild(fragment)
     return styleList
   } else {
     let promiseList = []
@@ -64,12 +58,12 @@ function dealStyles(styles, option, el) {
       console.log(res)
       let innerHTML, className, style
       className = typeof option.cssScope === 'string' ? option.cssScope : uuid()
+      // el.classList.add(className)
       //   innerHTML = `.${className}{${res.join('')}}`
       innerHTML = res.join('')
       style = document.createElement('style')
       style.innerHTML = innerHTML
-      el.classList.add(className)
-      document.head.appendChild(style)
+      // document.head.appendChild(style)
       return [style]
     })
   }
@@ -80,6 +74,7 @@ function dealPreloads(preLoads) {
   preLoads.forEach((ele) => {
     let link = document.createElement('link')
     link = Object.assign(link, ele)
+    ele.__mounted__ = true
     links.push(link)
     fragment.appendChild(link)
   })

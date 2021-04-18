@@ -2,12 +2,13 @@
  * @Author: caiwu
  * @Date: 2021-04-10 22:45:01
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-04-11 21:06:04
+ * @Last Modified time: 2021-04-19 00:31:07
  */
 import efficts from './efficts'
 import { SyncHook } from '../tapable/syncHook'
 import { htmlLoader } from '@/utils/core'
 import { resourceParser } from '@/utils/core'
+import createSandbox from '@/utils/sandBox'
 
 export default class EffectsImport {
   __hook__ = new SyncHook()
@@ -18,35 +19,65 @@ export default class EffectsImport {
   __created__ = null
   __cache__ = {}
   __deactive__ = []
-  // __bootstrap__ = null
   constructor() {
     if (EffectsImport.prototype.Instance === void 0) {
+      window.webpackJsonpLength = window.webpackJsonp.length
       this.initSyncHook()
       this.__hook__.call('createEffect', efficts)
       EffectsImport.prototype.Instance = this
     }
     return EffectsImport.prototype.Instance
   }
+  exec(parseredResources, el) {
+    let fragment = document.createDocumentFragment(),
+      templateFragment = document.createDocumentFragment()
+    parseredResources.template.forEach((childNode) => {
+      templateFragment.appendChild(childNode)
+    })
+    el.appendChild(templateFragment)
+    parseredResources.styles
+      .filter((ele) => !ele.__mounted__)
+      .forEach((style) => {
+        style.__mounted__ = true
+        fragment.appendChild(style)
+      })
+    parseredResources.preLoads
+      .filter((ele) => !ele.__mounted__)
+      .forEach((preLoad) => {
+        preLoad.__mounted__ = true
+        fragment.appendChild(preLoad)
+      })
+    document.head.appendChild(fragment)
+
+    createSandbox(parseredResources.scripts, window)
+  }
   initSyncHook() {
     this.__hook__.tap('bootstrap', async (entry, option, el) => {
-      let resources = await htmlLoader(entry, option)
-      resourceParser(resources, entry, option, el, this).then((data) => {
-        console.log(data)
-        EffectsImport.prototype.Instance.__cache__['entry'] = data
-      })
-      console.log(resources)
+      let parseredResources = EffectsImport.prototype.Instance.__cache__[entry]
+      if (parseredResources) {
+        this.exec(parseredResources, el)
+      } else {
+        let resources = await htmlLoader(entry, option)
+        console.log(resources)
+        resourceParser(resources, entry, option, el, this).then((parseredResources) => {
+          console.log(parseredResources)
+          this.exec(parseredResources, el)
+          EffectsImport.prototype.Instance.__cache__[entry] = parseredResources
+        })
+      }
     })
-    this.__hook__.tap('execBeforeCreate', (app) => {
-      this.__beforeCreate__ && this.__beforeCreate__(app)
+    this.__hook__.tap('execBeforeCreate', (app, entry) => {
+      this.__beforeCreate__ && this.__beforeCreate__(app, entry)
     })
-    this.__hook__.tap('execCreated', (app) => {
-      this.__created__ && this.__created__(app)
+    this.__hook__.tap('execCreated', (app, entry) => {
+      this.__created__ && this.__created__(app, entry)
     })
-    this.__hook__.tap('execMounted', (app) => {
-      this.__mounted__ && this.__mounted__(app)
+    this.__hook__.tap('execMounted', (app, entry) => {
+      this.__mounted__ && this.__mounted__(app, entry)
     })
-    this.__hook__.tap('execUnmounted', (app) => {
-      this.__unmounted__ && this.__unmounted__(app)
+    this.__hook__.tap('execUnmounted', (app, entry) => {
+      this.rollBcak(entry)
+      this.__unmounted__ && this.__unmounted__(app, entry)
     })
     // lifeCycle
     this.__hook__.tap('createEffect', (fn) => {
@@ -65,6 +96,25 @@ export default class EffectsImport {
       this.__unmounted__ = fn
     })
   }
+  rollBcak(entry) {
+    let parseredResources = EffectsImport.prototype.Instance.__cache__[entry]
+    window.webpackJsonp.splice(webpackJsonpLength, window.webpackJsonp.length - webpackJsonpLength)
+    for (let key in window._SANDBOX_WINDOW_) {
+      window[key] = null
+    }
+    parseredResources.styles
+      .filter((ele) => ele.__mounted__)
+      .forEach((style) => {
+        style.__mounted__ = false
+        style.remove()
+      })
+    parseredResources.preLoads
+      .filter((ele) => ele.__mounted__)
+      .forEach((preLoad) => {
+        preLoad.__mounted__ = false
+        preLoad.remove()
+      })
+  }
   tap(targetName, ...args) {
     this.__hook__.call(targetName, ...args)
     return this
@@ -76,12 +126,7 @@ export default class EffectsImport {
     }
     if (component instanceof Promise) {
       return component.then((data) => {
-        EffectsImport.prototype.Instance.__effcts__(
-          data.default || data,
-          entry,
-          option,
-          EffectsImport.prototype.Instance.__hook__
-        )
+        EffectsImport.prototype.Instance.__effcts__(data.default || data, entry, option, EffectsImport.prototype.Instance.__hook__)
         return data
       })
     }

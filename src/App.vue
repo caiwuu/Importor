@@ -1,8 +1,9 @@
 <template>
-  <div id="app2">
+  <div id="app2" style="height:100vh;overflow: scroll;">
     <div id="nav">
-      <router-link to="/">Home</router-link> | <router-link to="/about">About</router-link>|
-      <router-link to="/test">Test</router-link>
+      <router-link to="/">Home</router-link> | <router-link to="/about">TEST1</router-link>|
+      <router-link to="/Test">TEST2</router-link>|
+      <router-link to="/Test3">TEST3</router-link>
     </div>
     <router-view />
   </div>
@@ -28,5 +29,9 @@
         color: #42b983;
       }
     }
+  }
+  body {
+    padding: 0;
+    margin: 0;
   }
 </style>
