@@ -2,13 +2,13 @@
  * @Author: caiwu
  * @Date: 2021-04-10 22:45:01
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-04-19 00:31:07
+ * @Last Modified time: 2021-04-20 00:43:55
  */
 import efficts from './efficts'
 import { SyncHook } from '../tapable/syncHook'
 import { htmlLoader } from '@/utils/core'
 import { resourceParser } from '@/utils/core'
-import createSandbox from '@/utils/sandBox'
+import exec from './exec'
 
 export default class EffectsImport {
   __hook__ = new SyncHook()
@@ -20,49 +20,23 @@ export default class EffectsImport {
   __cache__ = {}
   __deactive__ = []
   constructor() {
-    if (EffectsImport.prototype.Instance === void 0) {
-      window.webpackJsonpLength = window.webpackJsonp.length
-      this.initSyncHook()
-      this.__hook__.call('createEffect', efficts)
-      EffectsImport.prototype.Instance = this
-    }
-    return EffectsImport.prototype.Instance
-  }
-  exec(parseredResources, el) {
-    let fragment = document.createDocumentFragment(),
-      templateFragment = document.createDocumentFragment()
-    parseredResources.template.forEach((childNode) => {
-      templateFragment.appendChild(childNode)
-    })
-    el.appendChild(templateFragment)
-    parseredResources.styles
-      .filter((ele) => !ele.__mounted__)
-      .forEach((style) => {
-        style.__mounted__ = true
-        fragment.appendChild(style)
-      })
-    parseredResources.preLoads
-      .filter((ele) => !ele.__mounted__)
-      .forEach((preLoad) => {
-        preLoad.__mounted__ = true
-        fragment.appendChild(preLoad)
-      })
-    document.head.appendChild(fragment)
-
-    createSandbox(parseredResources.scripts, window)
+    window.webpackJsonpLength = window.webpackJsonp.length
+    this.initSyncHook()
+    // 注入副作用函数（vue）
+    this.tap('createEffect', efficts)
   }
   initSyncHook() {
     this.__hook__.tap('bootstrap', async (entry, option, el) => {
-      let parseredResources = EffectsImport.prototype.Instance.__cache__[entry]
+      let parseredResources = this.__cache__[entry]
       if (parseredResources) {
-        this.exec(parseredResources, el)
+        exec(parseredResources, el)
       } else {
         let resources = await htmlLoader(entry, option)
-        console.log(resources)
+        // console.log(resources)
         resourceParser(resources, entry, option, el, this).then((parseredResources) => {
-          console.log(parseredResources)
-          this.exec(parseredResources, el)
-          EffectsImport.prototype.Instance.__cache__[entry] = parseredResources
+          // console.log(parseredResources)
+          exec(parseredResources, el)
+          this.__cache__[entry] = parseredResources
         })
       }
     })
@@ -79,25 +53,30 @@ export default class EffectsImport {
       this.rollBcak(entry)
       this.__unmounted__ && this.__unmounted__(app, entry)
     })
-    // lifeCycle
+    // 副作用钩子,框架相关、平台相关的代码通过该钩子注入
     this.__hook__.tap('createEffect', (fn) => {
       this.__effcts__ = fn
     })
+    // 微应用创建之前
     this.__hook__.tap('beforeCreate', (fn) => {
       this.__beforeCreate__ = fn
     })
+    // 微应用创建但为挂载
     this.__hook__.tap('created', (fn) => {
       this.__created__ = fn
     })
+    // 微应用已经挂载
     this.__hook__.tap('mounted', (fn) => {
       this.__mounted__ = fn
     })
+    // 微应用卸载
     this.__hook__.tap('unmounted', (fn) => {
       this.__unmounted__ = fn
     })
   }
+  // 运行时状态回滚;恢复为运行时环境变量
   rollBcak(entry) {
-    let parseredResources = EffectsImport.prototype.Instance.__cache__[entry]
+    let parseredResources = this.__cache__[entry]
     window.webpackJsonp.splice(webpackJsonpLength, window.webpackJsonp.length - webpackJsonpLength)
     for (let key in window._SANDBOX_WINDOW_) {
       window[key] = null
@@ -119,16 +98,16 @@ export default class EffectsImport {
     this.__hook__.call(targetName, ...args)
     return this
   }
-  effectsImport(component, entry, option) {
+  effectsImport = function(component, entry, option) {
     // Return import without side effects if no entry is passed in
     if (!entry) {
       return component
     }
     if (component instanceof Promise) {
       return component.then((data) => {
-        EffectsImport.prototype.Instance.__effcts__(data.default || data, entry, option, EffectsImport.prototype.Instance.__hook__)
+        this.__effcts__(data.default || data, entry, option, this.__hook__)
         return data
       })
     }
-  }
+  }.bind(this)
 }

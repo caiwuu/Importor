@@ -36,11 +36,7 @@ function dealStyles(styles, option, el) {
         style = document.createElement('link')
         style = Object.assign(style, ele)
       }
-      // let fragment = document.createDocumentFragment()
-      // styleList.push(style)
-      // fragment.appendChild(style)
     })
-    // document.head.appendChild(fragment)
     return styleList
   } else {
     let promiseList = []
@@ -58,12 +54,9 @@ function dealStyles(styles, option, el) {
       console.log(res)
       let innerHTML, className, style
       className = typeof option.cssScope === 'string' ? option.cssScope : uuid()
-      // el.classList.add(className)
-      //   innerHTML = `.${className}{${res.join('')}}`
       innerHTML = res.join('')
       style = document.createElement('style')
       style.innerHTML = innerHTML
-      // document.head.appendChild(style)
       return [style]
     })
   }

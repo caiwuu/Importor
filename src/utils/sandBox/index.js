@@ -32,16 +32,14 @@ function proxyObj(target) {
       return true
     },
     defineProperty: function(target, prop, descriptor) {
-      !descriptor.writable && console.error('禁止子应用在window中定义writable为false的变量;这会子应用在第二次打开发生redefine错误')
-      Reflect.defineProperty(target, prop, descriptor)
-      return true
+      !descriptor.writable && console.error('禁止子应用在window中定义writable为false的变量;这会造成子应用在第二次打开发生redefine错误')
+      return Reflect.defineProperty(target, prop, descriptor)
     },
   })
   return proxyObj
 }
 
 export default function createSandbox(src, target) {
-  target.customWindow = {}
   let proxy = proxyObj(target)
   compileCode(src).call(proxy, proxy)
 }

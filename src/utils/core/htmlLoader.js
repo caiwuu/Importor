@@ -2,7 +2,7 @@
  * @Author: caiwu
  * @Date: 2021-04-10 22:48:13
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-04-19 00:28:10
+ * @Last Modified time: 2021-04-20 00:06:37
  */
 
 export default function htmlLoader(entry, option) {
@@ -75,9 +75,5 @@ function stylePicker(entry, dom, result, defaultOpt) {
 function templatePicker(dom, result) {
   let fragment = document.createDocumentFragment()
   let childNodes = Array.from(dom.body.childNodes)
-  // let node
-  // while ((node = childNodes.shift())) {
-  //   fragment.appendChild(node)
-  // }
   result.template = childNodes
 }

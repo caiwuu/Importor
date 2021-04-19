@@ -2,7 +2,7 @@
  * @Author: caiwu
  * @Date: 2021-04-10 22:47:07
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-04-18 18:24:19
+ * @Last Modified time: 2021-04-20 00:10:22
  */
 export default function efficts(vueOptions, entry, option, hook) {
   let created = vueOptions.created
@@ -18,7 +18,6 @@ export default function efficts(vueOptions, entry, option, hook) {
     created && created.call(this)
     hook.call('execCreated', this, entry)
   }
-
   vueOptions.mounted = function() {
     mounted && mounted.call(this)
     hook.call('execMounted', this, entry)
