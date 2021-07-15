@@ -2,7 +2,7 @@
  * @Author: caiwu
  * @Date: 2021-04-10 22:49:03
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-04-10 22:49:44
+ * @Last Modified time: 2021-06-27 19:50:08
  */
 import CustomError from '@/utils/error'
 export class SyncHook {
@@ -14,10 +14,7 @@ export class SyncHook {
     if (!this.tasks[hookName]) {
       this.tasks[hookName] = task
     } else {
-      throw CustomError(
-        'SyncHookTapError',
-        `A SyncHook named ${hookName} already exists, But you can run Instance.remove(hookName) before defining it `
-      )
+      throw CustomError('SyncHookTapError', `A SyncHook named ${hookName} already exists, But you can run Instance.remove(hookName) before defining it `)
     }
   }
   call(hookName, ...args) {

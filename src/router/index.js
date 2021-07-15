@@ -18,28 +18,33 @@ const routes = [
     component: Home,
   },
   {
-    path: '/Test',
-    name: 'Test',
+    path: '/Test1',
+    name: 'Test1',
     component: () =>
-      effectsImport(import('../views/Test2.vue'), 'Test', {
+      effectsImport(import('../views/Test1.vue'), 'app1', {
         origin: 'http://49.234.27.60/',
         cssScope: true,
         proxy: true,
       }),
   },
   {
-    path: '/Test3',
-    name: 'Test3',
-    component: () => effectsImport(import('../views/Test3.vue')),
-  },
-  {
-    path: '/about',
-    name: 'About',
+    path: '/Test2',
+    name: 'Test',
     component: () =>
-      effectsImport(import('../views/Test.vue'), 'test', {
+      effectsImport(import('../views/Test2.vue'), 'app2', {
         origin: 'http://49.234.27.60/',
         cssScope: true,
-        proxy: true,
+        proxy: false,
+      }),
+  },
+  {
+    path: '/Test3',
+    name: 'Test3',
+    component: () =>
+      effectsImport(import('../views/Test3.vue'), 'app3', {
+        origin: 'http://49.234.27.60/',
+        cssScope: true,
+        proxy: false,
       }),
   },
 ]
