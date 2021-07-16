@@ -24,7 +24,7 @@ const routes = [
       effectsImport(import('../views/Test1.vue'), 'app1', {
         origin: 'http://49.234.27.60/',
         cssScope: true,
-        proxy: true,
+        proxy: false,
       }),
   },
   {

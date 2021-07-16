@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: caiwu
+ * @CreateDate: 
+ * @LastEditor: 
+ * @LastEditTime: 2021-07-16 11:06:14
+ */
 // const myPlugin = require('./myPlugin')
 module.exports = {
   publicPath: './',

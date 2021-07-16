@@ -1,34 +1,51 @@
+/*
+ * @Description: 
+ * @Author: caiwu
+ * @CreateDate: 
+ * @LastEditor: 
+ * @LastEditTime: 2021-07-16 17:11:16
+ */
 function compileCode(src) {
   src = `with (proxyObj){\n let window = this;\n ${src}\n}`
   return new Function('proxyObj', src)
 }
 
 function proxyObj(target) {
-  target._SANDBOX_WINDOW_ = {}
+  let window = { webpackJsonp:null }
+  let ignoreList = [
+    'setTimeout',
+    'clearTimeout',
+    'setInterval',
+    'requestAnimationFrame',
+    'cancelAnimationFrame',
+    'addEventListener',
+    'getComputedStyle',
+    ]
   let proxyObj = new Proxy(target, {
     get(target, key) {
-      let ignoreList = [
-        'setTimeout',
-        'clearTimeout',
-        'setInterval',
-        'requestAnimationFrame',
-        'cancelAnimationFrame',
-        'addEventListener',
-        'getComputedStyle',
-      ]
+      if (key === Symbol.unscopables) {
+        return undefined;
+      }   
+      console.log('getter:','window.'+key);
       if (ignoreList.includes(key)) {
         return Reflect.get(target, key).bind(null)
       }
-      if (key === 'window' || key === '_SANDBOX_WINDOW_') {
-        return target['_SANDBOX_WINDOW_']
+      if (key === 'window' || key === 'self') {
+        return window
       }
-      return Reflect.get(target._SANDBOX_WINDOW_, key) || Reflect.get(target, key)
+      if(key==='WINDOW'){
+        return target
+      }
+      return Reflect.get(window, key) || Reflect.get(target, key)
+    },
+    has(target, key){
+        return true
     },
     set(target, key, value) {
-      console.log(`======set====${key}:${value}`)
-      let ignoreList = ['webpackJsonp']
-      Reflect.set(target, key, value)
-      if (!ignoreList.includes(key)) Reflect.set(target._SANDBOX_WINDOW_, key, value)
+      console.log(`setter:${key}=${value}`)
+      // let ignoreList = ['webpackJsonp']
+      let ignoreList = []
+      Reflect.set(window, key, value)
       return true
     },
     defineProperty: function(target, prop, descriptor) {
@@ -38,7 +55,6 @@ function proxyObj(target) {
   })
   return proxyObj
 }
-
 export default function createSandbox(src, target) {
   let proxy = proxyObj(target)
   compileCode(src).call(proxy, proxy)

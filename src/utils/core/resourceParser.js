@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: caiwu
+ * @CreateDate: 
+ * @LastEditor: 
+ * @LastEditTime: 2021-07-16 17:10:43
+ */
 import uuid from '@/utils/utils/uuid'
 export default async function resourceParser(resources, entry, option, el, ctx) {
   let preLoads, styles, scripts
@@ -20,7 +27,7 @@ function dealScripts(scripts) {
 
   return Promise.all(promiseList).then((res) => {
     let code
-    code = res.join(';\n')
+    code = res.join(';\r\n')
     return code
   })
 }
