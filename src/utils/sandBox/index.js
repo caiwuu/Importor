@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate: 
  * @LastEditor: 
- * @LastEditTime: 2021-07-16 17:11:16
+ * @LastEditTime: 2021-07-16 17:37:07
  */
 function compileCode(src) {
   src = `with (proxyObj){\n let window = this;\n ${src}\n}`
@@ -35,6 +35,9 @@ function proxyObj(target) {
       }
       if(key==='WINDOW'){
         return target
+      }
+      if(key==='webpackJsonp'){
+        return Reflect.get(window, key)
       }
       return Reflect.get(window, key) || Reflect.get(target, key)
     },
