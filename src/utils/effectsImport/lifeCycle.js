@@ -2,9 +2,9 @@
  * @Author: caiwu
  * @Date: 2021-04-10 22:47:07
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-04-20 00:10:22
+ * @Last Modified time: 2021-07-16 23:40:02
  */
-export default function efficts(vueOptions, entry, option, hook) {
+export default function lifeCycle(vueOptions, entry, option, hook) {
   let created = vueOptions.created
   let mounted = vueOptions.mounted
   let destroyed = vueOptions.destroyed

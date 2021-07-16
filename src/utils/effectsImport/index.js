@@ -2,15 +2,15 @@
  * @Author: caiwu
  * @Date: 2021-04-10 22:45:01
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-04-20 00:43:55
+ * @Last Modified time: 2021-07-17 00:12:31
  */
-import efficts from './efficts'
+import lifeCycleForVue from './lifeCycle'
 import { SyncHook } from '../tapable/syncHook'
 import { htmlLoader } from '@/utils/core'
 import { resourceParser } from '@/utils/core'
 import exec from './exec'
 
-export default class EffectsImport {
+export default class AppImport {
   __hook__ = new SyncHook()
   __effcts__ = null
   __mounted__ = null
@@ -19,11 +19,11 @@ export default class EffectsImport {
   __created__ = null
   __cache__ = {}
   __deactive__ = []
-  constructor() {
+  constructor(liftCycle = lifeCycleForVue) {
     window.webpackJsonpLength = window.webpackJsonp.length
     this.initSyncHook()
-    // 注入副作用函数（vue）
-    this.tap('createEffect', efficts)
+    // 注入生命周期（vue）
+    this.on('registerLifeCycle', liftCycle)
   }
   initSyncHook() {
     this.__hook__.tap('bootstrap', async (entry, option, el) => {
@@ -54,7 +54,7 @@ export default class EffectsImport {
       this.__unmounted__ && this.__unmounted__(app, entry)
     })
     // 副作用钩子,框架相关、平台相关的代码通过该钩子注入
-    this.__hook__.tap('createEffect', (fn) => {
+    this.__hook__.tap('registerLifeCycle', (fn) => {
       this.__effcts__ = fn
     })
     // 微应用创建之前
@@ -94,11 +94,11 @@ export default class EffectsImport {
         preLoad.remove()
       })
   }
-  tap(targetName, ...args) {
+  on(targetName, ...args) {
     this.__hook__.call(targetName, ...args)
     return this
   }
-  effectsImport = function(component, entry, option) {
+  appImport = function(component, entry, option) {
     // Return import without side effects if no entry is passed in
     if (!entry) {
       return component

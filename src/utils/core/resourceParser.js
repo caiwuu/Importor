@@ -1,16 +1,17 @@
 /*
- * @Description: 
+ * @Description:
  * @Author: caiwu
- * @CreateDate: 
- * @LastEditor: 
+ * @CreateDate:
+ * @LastEditor:
  * @LastEditTime: 2021-07-16 17:10:43
  */
 import uuid from '@/utils/utils/uuid'
 export default async function resourceParser(resources, entry, option, el, ctx) {
   let preLoads, styles, scripts
+  const preLoadScript = resources.preLoads.filter((ele) => /.*\.js$/.test(ele.href))
   preLoads = dealPreloads(resources.preLoads, el)
   styles = await dealStyles(resources.styles, option, el)
-  scripts = await dealScripts(resources.scripts)
+  scripts = await dealScripts([...preLoadScript, ...resources.scripts])
   return { preLoads, styles, template: resources.template, scripts }
 }
 function dealScripts(scripts) {
@@ -19,7 +20,7 @@ function dealScripts(scripts) {
     promiseList.push(
       ele.innerHTML
         ? ele.innerHTML
-        : fetch(ele.src)
+        : fetch(ele.src || ele.href)
             .then((res) => res.text())
             .then((data) => data)
     )
