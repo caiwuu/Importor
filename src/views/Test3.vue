@@ -12,37 +12,12 @@
   </div>
 </template>
 <script>
-  import axios from 'axios'
   export default {
     name: 'ABOUT',
     data() {
       return {
         a: 1,
       }
-    },
-    created() {
-      // fetch("test")
-      //   .then((res) => {
-      //     return res.text();
-      //   })
-      //   .then((data) => {
-      //     let parser = new DOMParser();
-      //     let dom = parser.parseFromString(data, "text/html");
-      //     let scripts = dom.querySelectorAll("script");
-      //     let origin = window.location.origin.replace(/\//g, "\\/");
-      //     let reg = new RegExp(`(${origin})*(.*)`);
-      //     scripts = Array.from(scripts).map((ele) => ({
-      //       src: ele.src.replace(reg, "$2"),
-      //       defer: ele.defer,
-      //     }));
-      //     scripts.forEach((ele, index) => {
-      //       let script = document.createElement("script");
-      //       script.src = ele.src;
-      //       script.defer = true;
-      //       script.tags = "ssss";
-      //       document.body.appendChild(script);
-      //     });
-      //   });
     },
   }
 </script>

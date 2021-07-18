@@ -2,7 +2,7 @@
  * @Author: caiwu
  * @Date: 2021-04-10 22:48:13
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-04-20 00:06:37
+ * @Last Modified time: 2021-07-18 21:03:44
  */
 
 export default function htmlLoader(entry, option) {
@@ -37,7 +37,7 @@ function scriptPicker(entry, dom, result, defaultOpt) {
     ele.remove()
     let src = ele.src.replace(reg, '$2')
     return {
-      src: src ? (/^http(s){0,1}/.test(src) ? src : (defaultOpt.proxy ? entry : defaultOpt.origin) + src) : null,
+      src: src ? (/^http(s){0,1}/.test(src) ? src : (defaultOpt.proxy ? (defaultOpt.prefix === undefined ? entry : defaultOpt.prefix) : defaultOpt.origin) + src) : null,
       defer: ele.defer,
       async: ele.async,
       innerHTML: ele.innerHTML,
@@ -54,12 +54,12 @@ function stylePicker(entry, dom, result, defaultOpt) {
       let href = ele.href.replace(reg, '$2')
       if (ele.rel === 'stylesheet') {
         result.styles.push({
-          href: /^http(s){0,1}/.test(href) ? href : (defaultOpt.proxy ? entry : defaultOpt.origin) + href || null,
+          href: /^http(s){0,1}/.test(href) ? href : (defaultOpt.proxy ? (defaultOpt.prefix === undefined ? entry : defaultOpt.prefix) : defaultOpt.origin) + href || null,
           rel: ele.rel,
         })
       } else {
         result.preLoads.push({
-          href: /^http(s){0,1}/.test(href) ? href : (defaultOpt.proxy ? entry : defaultOpt.origin) + href || null,
+          href: /^http(s){0,1}/.test(href) ? href : (defaultOpt.proxy ? (defaultOpt.prefix === undefined ? entry : defaultOpt.prefix) : defaultOpt.origin) + href || null,
           rel: ele.rel,
           as: ele.as,
           sizes: ele.sizes.value,

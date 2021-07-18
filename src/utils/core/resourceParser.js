@@ -11,6 +11,7 @@ export default async function resourceParser(resources, entry, option, el, ctx) 
   const preLoadScript = resources.preLoads.filter((ele) => /.*\.js$/.test(ele.href))
   preLoads = dealPreloads(resources.preLoads, el)
   styles = await dealStyles(resources.styles, option, el)
+  console.log([...preLoadScript, ...resources.scripts])
   scripts = await dealScripts([...preLoadScript, ...resources.scripts])
   return { preLoads, styles, template: resources.template, scripts }
 }
@@ -23,12 +24,15 @@ function dealScripts(scripts) {
         : fetch(ele.src || ele.href)
             .then((res) => res.text())
             .then((data) => data)
+            .catch((error) => {
+              throw new Error('dealScripts error:', error)
+            })
     )
   })
 
   return Promise.all(promiseList).then((res) => {
     let code
-    code = res.join(';\r\n')
+    code = res.join(';\n')
     return code
   })
 }
@@ -55,6 +59,9 @@ function dealStyles(styles, option, el) {
           : fetch(ele.href)
               .then((res) => res.text())
               .then((data) => data)
+              .catch((error) => {
+                throw new Error('dealStyles error:', error)
+              })
       )
     })
 

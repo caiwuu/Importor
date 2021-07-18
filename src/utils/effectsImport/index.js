@@ -2,9 +2,9 @@
  * @Author: caiwu
  * @Date: 2021-04-10 22:45:01
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-07-17 00:12:31
+ * @Last Modified time: 2021-07-18 21:19:52
  */
-import lifeCycleForVue from './lifeCycle'
+import lifeCycle from './lifeCycle'
 import { SyncHook } from '../tapable/syncHook'
 import { htmlLoader } from '@/utils/core'
 import { resourceParser } from '@/utils/core'
@@ -12,29 +12,28 @@ import exec from './exec'
 
 export default class AppImport {
   __hook__ = new SyncHook()
-  __effcts__ = null
+  __bootstrap__ = null
   __mounted__ = null
   __unmounted__ = null
   __beforeCreate__ = null
   __created__ = null
   __cache__ = {}
   __deactive__ = []
-  constructor(liftCycle = lifeCycleForVue) {
+  constructor(liftCycle = lifeCycle) {
     window.webpackJsonpLength = window.webpackJsonp.length
-    this.initSyncHook()
+    this.init()
     // 注入生命周期（vue）
     this.on('registerLifeCycle', liftCycle)
   }
-  initSyncHook() {
+  init() {
     this.__hook__.tap('bootstrap', async (entry, option, el) => {
       let parseredResources = this.__cache__[entry]
       if (parseredResources) {
         exec(parseredResources, el)
       } else {
         let resources = await htmlLoader(entry, option)
-        // console.log(resources)
+        console.log(resources)
         resourceParser(resources, entry, option, el, this).then((parseredResources) => {
-          // console.log(parseredResources)
           exec(parseredResources, el)
           this.__cache__[entry] = parseredResources
         })
@@ -55,7 +54,7 @@ export default class AppImport {
     })
     // 副作用钩子,框架相关、平台相关的代码通过该钩子注入
     this.__hook__.tap('registerLifeCycle', (fn) => {
-      this.__effcts__ = fn
+      this.__bootstrap__ = fn
     })
     // 微应用创建之前
     this.__hook__.tap('beforeCreate', (fn) => {
@@ -76,18 +75,14 @@ export default class AppImport {
   }
   // 运行时状态回滚;恢复为运行时环境变量
   rollBcak(entry) {
-    let parseredResources = this.__cache__[entry]
-    window.webpackJsonp.splice(webpackJsonpLength, window.webpackJsonp.length - webpackJsonpLength)
-    for (let key in window._SANDBOX_WINDOW_) {
-      window[key] = null
-    }
-    parseredResources.styles
+    let parseredResources = this.__cache__[entry] || {}
+    ;(parseredResources.styles || [])
       .filter((ele) => ele.__mounted__)
       .forEach((style) => {
         style.__mounted__ = false
         style.remove()
       })
-    parseredResources.preLoads
+    ;(parseredResources.preLoads || [])
       .filter((ele) => ele.__mounted__)
       .forEach((preLoad) => {
         preLoad.__mounted__ = false
@@ -105,7 +100,7 @@ export default class AppImport {
     }
     if (component instanceof Promise) {
       return component.then((data) => {
-        this.__effcts__(data.default || data, entry, option, this.__hook__)
+        this.__bootstrap__(data.default || data, entry, option, this.__hook__)
         return data
       })
     }

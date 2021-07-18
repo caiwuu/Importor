@@ -11,7 +11,7 @@ function compileCode(src) {
 }
 
 function proxyObj(target) {
-  let window = { webpackJsonp: null }
+  let window = { webpackJsonp: null, webpackHotUpdate: null }
   let ignoreList = ['setTimeout', 'clearTimeout', 'setInterval', 'requestAnimationFrame', 'cancelAnimationFrame', 'addEventListener', 'getComputedStyle']
   let proxyObj = new Proxy(target, {
     get(target, key) {
@@ -30,6 +30,10 @@ function proxyObj(target) {
       }
       if (key === 'webpackJsonp') {
         return Reflect.get(window, key)
+      }
+      if (key === 'webpackHotUpdate') {
+        console.log(Reflect.get(target, key))
+        return Reflect.get(target, key)
       }
       return Reflect.get(window, key) || Reflect.get(target, key)
     },

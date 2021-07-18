@@ -1,8 +1,8 @@
 /*
- * @Description: 
+ * @Description:
  * @Author: caiwu
- * @CreateDate: 
- * @LastEditor: 
+ * @CreateDate:
+ * @LastEditor:
  * @LastEditTime: 2021-07-16 11:06:14
  */
 // const myPlugin = require('./myPlugin')
@@ -38,8 +38,17 @@ module.exports = {
           '/app2': '', // 这个意思就是以api开头的，定向到哪里, 如果你的后边还有路径的话， 会自动拼接上
         },
       },
+      // '/app3': {
+      //   target: 'http://49.234.27.60/app3',
+      //   changeOrigin: true, // 是否改变域名
+      //   ws: true,
+      //   pathRewrite: {
+      //     // 路径重写
+      //     '/app3': '', // 这个意思就是以api开头的，定向到哪里, 如果你的后边还有路径的话， 会自动拼接上
+      //   },
+      // },
       '/app3': {
-        target: 'http://49.234.27.60/app3',
+        target: 'http://192.168.1.8:8081/app3',
         changeOrigin: true, // 是否改变域名
         ws: true,
         pathRewrite: {
