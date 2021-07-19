@@ -3,10 +3,10 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-07-16 17:37:07
+ * @LastEditTime: 2021-07-19 16:47:36
  */
 function compileCode(src) {
-  src = `with (proxyObj){\n let window = this;\n ${src}\n}`
+  src = `with (proxyObj){\n const window = this;\n ${src}\n}`
   return new Function('proxyObj', src)
 }
 
@@ -18,14 +18,18 @@ function proxyObj(target) {
       if (key === Symbol.unscopables) {
         return undefined
       }
-      // console.log('getter:', 'window.' + key)
+      if(key==='WINDOW'){
+        console.log('getter:', 'window.' + key)
+      }
       if (ignoreList.includes(key)) {
         return Reflect.get(target, key).bind(null)
       }
       if (key === 'window' || key === 'self') {
+        console.log('get window');
         return window
       }
       if (key === 'WINDOW') {
+        console.log('get WINDOW');
         return target
       }
       if (key === 'webpackJsonp') {

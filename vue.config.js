@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-07-16 11:06:14
+ * @LastEditTime: 2021-07-19 14:58:44
  */
 // const myPlugin = require('./myPlugin')
 module.exports = {
@@ -48,7 +48,7 @@ module.exports = {
       //   },
       // },
       '/app3': {
-        target: 'http://192.168.1.8:8081/app3',
+        target: 'http://localhost:8081/app3',
         changeOrigin: true, // 是否改变域名
         ws: true,
         pathRewrite: {
