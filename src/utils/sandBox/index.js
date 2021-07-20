@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-07-19 16:47:36
+ * @LastEditTime: 2021-07-20 11:11:32
  */
 function compileCode(src) {
   src = `with (proxyObj){\n const window = this;\n ${src}\n}`
@@ -17,9 +17,6 @@ function proxyObj(target) {
     get(target, key) {
       if (key === Symbol.unscopables) {
         return undefined
-      }
-      if(key==='WINDOW'){
-        console.log('getter:', 'window.' + key)
       }
       if (ignoreList.includes(key)) {
         return Reflect.get(target, key).bind(null)
@@ -40,6 +37,9 @@ function proxyObj(target) {
         return Reflect.get(target, key)
       }
       return Reflect.get(window, key) || Reflect.get(target, key)
+    },
+    has(target, key){
+      return true
     },
     set(target, key, value) {
       // console.log(`setter:${key}=${value}`)
