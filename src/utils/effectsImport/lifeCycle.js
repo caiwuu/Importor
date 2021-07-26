@@ -2,7 +2,7 @@
  * @Author: caiwu
  * @Date: 2021-04-10 22:47:07
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-07-18 16:36:01
+ * @Last Modified time: 2021-07-25 22:26:00
  */
 export default function lifeCycle(vueOptions, entry, option, hook) {
   let created = vueOptions.created
@@ -10,7 +10,7 @@ export default function lifeCycle(vueOptions, entry, option, hook) {
   let destroyed = vueOptions.destroyed
   vueOptions.beforeCreate.push(function() {
     this.$nextTick(() => {
-      hook.call('bootstrap', entry, option, this.$el)
+      hook.call('bootstrap', entry, option, this.$el, this)
     })
     hook.call('execBeforeCreate', this, entry)
   })

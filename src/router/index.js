@@ -1,8 +1,8 @@
 /*
- * @Description: 
+ * @Description:
  * @Author: caiwu
- * @CreateDate: 
- * @LastEditor: 
+ * @CreateDate:
+ * @LastEditor:
  * @LastEditTime: 2021-07-19 16:01:35
  */
 import Vue from 'vue'
@@ -51,6 +51,7 @@ const routes = [
         origin: 'http://localhost:8081',
         cssScope: true,
         proxy: true,
+        // active: 'about3',
         prefix: '',
       }),
   },

@@ -5,15 +5,25 @@
  * @LastEditor:
  * @LastEditTime: 2021-07-20 11:11:32
  */
-function compileCode(src) {
-  src = `with (proxyObj){\n const window = this;\n ${src}\n}`
-  return new Function('proxyObj', src)
+
+const initCode = `const window = this;`
+
+function execCode(src) {
+  src = `with (proxyTarget){\n ${initCode}\n${src}\n}`
+  return new Function('proxyTarget', src)
 }
 
-function proxyObj(target) {
-  let window = { webpackJsonp: null, webpackHotUpdate: null }
+function proxyTarget(target, app, entry, option, hook) {
+  let window = {
+    webpackJsonp: null,
+    webpackHotUpdate: null,
+    BaseApp: app,
+    registerApp: (childApp) => {
+      hook.call('registerApp', childApp, entry, option)
+    },
+  }
   let ignoreList = ['setTimeout', 'clearTimeout', 'setInterval', 'requestAnimationFrame', 'cancelAnimationFrame', 'addEventListener', 'getComputedStyle']
-  let proxyObj = new Proxy(target, {
+  let proxyTarget = new Proxy(target, {
     get(target, key) {
       if (key === Symbol.unscopables) {
         return undefined
@@ -22,11 +32,11 @@ function proxyObj(target) {
         return Reflect.get(target, key).bind(null)
       }
       if (key === 'window' || key === 'self') {
-        console.log('get window');
+        console.log('get window')
         return window
       }
       if (key === 'WINDOW') {
-        console.log('get WINDOW');
+        console.log('get WINDOW')
         return target
       }
       if (key === 'webpackJsonp') {
@@ -38,7 +48,7 @@ function proxyObj(target) {
       }
       return Reflect.get(window, key) || Reflect.get(target, key)
     },
-    has(target, key){
+    has(target, key) {
       return true
     },
     set(target, key, value) {
@@ -51,9 +61,9 @@ function proxyObj(target) {
       return Reflect.defineProperty(window, prop, descriptor)
     },
   })
-  return proxyObj
+  return proxyTarget
 }
-export default function createSandbox(src, target) {
-  let proxy = proxyObj(target)
-  compileCode(src).call(proxy, proxy)
+export default function createSandbox(src, target, app, entry, option, hook) {
+  let proxy = proxyTarget(target, app, entry, option, hook)
+  execCode(src).call(proxy, proxy)
 }

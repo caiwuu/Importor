@@ -2,12 +2,13 @@
  * @Author: caiwu
  * @Date: 2021-04-10 22:45:01
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-07-18 21:19:52
+ * @Last Modified time: 2021-07-26 00:41:06
  */
 import lifeCycle from './lifeCycle'
 import { SyncHook } from '../tapable/syncHook'
 import { htmlLoader } from '@/utils/core'
 import { resourceParser } from '@/utils/core'
+import registerApp from './registerApp'
 import exec from './exec'
 
 export default class AppImport {
@@ -17,24 +18,26 @@ export default class AppImport {
   __unmounted__ = null
   __beforeCreate__ = null
   __created__ = null
+  __registerApp__ = null
   __cache__ = {}
   __deactive__ = []
   constructor(liftCycle = lifeCycle) {
     window.webpackJsonpLength = window.webpackJsonp.length
+    this.__hook__.tap('registerApp', registerApp)
     this.init()
     // 注入生命周期（vue）
     this.on('registerLifeCycle', liftCycle)
   }
   init() {
-    this.__hook__.tap('bootstrap', async (entry, option, el) => {
+    this.__hook__.tap('bootstrap', async (entry, option, el, app) => {
       let parseredResources = this.__cache__[entry]
       if (parseredResources) {
-        exec(parseredResources, el)
+        exec(parseredResources, el, app, entry, option, this.__hook__)
       } else {
         let resources = await htmlLoader(entry, option)
         console.log(resources)
         resourceParser(resources, entry, option, el, this).then((parseredResources) => {
-          exec(parseredResources, el)
+          exec(parseredResources, el, app, entry, option, this.__hook__)
           this.__cache__[entry] = parseredResources
         })
       }
