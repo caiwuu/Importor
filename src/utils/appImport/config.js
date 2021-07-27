@@ -3,11 +3,11 @@
  * @Author: caiwu
  * @CreateDate: 
  * @LastEditor: 
- * @LastEditTime: 2021-07-27 10:04:54
+ * @LastEditTime: 2021-07-27 14:19:15
  */
 import registerApp from './registerApp'
-import lifeCycle from './lifeCycle'
+import initLifecycle from './lifecycle'
 export default {
     registerApp,
-    lifeCycle
+    initLifecycle
 }

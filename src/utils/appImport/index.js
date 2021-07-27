@@ -11,22 +11,21 @@ import exec from './exec'
 
 export default class AppImport {
   __hook__ = new SyncHook()
-  __registerLifeCycle__ = null
+  __initLifecycle__ = null
   __mounted__ = null
   __unmounted__ = null
   __beforeCreate__ = null
   __created__ = null
   __cache__ = {}
-  __deactive__ = []
+  // __deactive__ = []
   constructor(config = {}) {
     let conf = Object.assign(defaultConfig,config)
-    window.webpackJsonpLength = window.webpackJsonp.length
-    this.init()
-    this.__hook__.tap('registerApp', conf.registerApp)
-    // 注入生命周期
-    this.on('registerLifeCycle', conf.lifeCycle)
+    this.init(conf)
   }
-  init() {
+  init(conf) {
+    // 注入生命周期
+    this.__initLifecycle__  = conf.initLifecycle
+    this.__hook__.tap('registerApp', conf.registerApp)
     this.__hook__.tap('bootstrap', async (entry, option, el, app) => {
       let parseredResources = this.__cache__[entry]
       if (parseredResources) {
@@ -52,10 +51,6 @@ export default class AppImport {
       this.rollBcak(entry)
       this.__unmounted__ && this.__unmounted__(app, entry)
     })
-    // 生命周期注册
-    this.__hook__.tap('registerLifeCycle', (fn) => {
-      this.__registerLifeCycle__ = fn
-    })
     // 微应用创建之前
     this.__hook__.tap('beforeCreate', (fn) => {
       this.__beforeCreate__ = fn
@@ -73,7 +68,6 @@ export default class AppImport {
       this.__unmounted__ = fn
     })
   }
-  // 运行时状态回滚;恢复为运行时环境变量
   rollBcak(entry) {
     let parseredResources = this.__cache__[entry] || {}
     ;(parseredResources.styles || [])
@@ -100,7 +94,7 @@ export default class AppImport {
     }
     if (component instanceof Promise) {
       return component.then((data) => {
-        this.__registerLifeCycle__(data.default || data, entry, option, this.__hook__)
+        this.__initLifecycle__(data.default || data, entry, option, this.__hook__)
         return data
       })
     }
