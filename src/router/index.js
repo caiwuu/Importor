@@ -3,12 +3,12 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-07-19 16:01:35
+ * @LastEditTime: 2021-07-27 09:56:57
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import AppImport from '@/utils/effectsImport'
+import AppImport from '@/utils/appImport'
 let { appImport } = new AppImport()
   .on('mounted', (vm, entry) => {
     console.log(entry + ' in mounted')
