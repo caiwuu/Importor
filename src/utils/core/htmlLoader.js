@@ -73,7 +73,6 @@ function stylePicker(entry, dom, result, defaultOpt) {
 }
 // pcik template from htmlEntry
 function templatePicker(dom, result) {
-  let fragment = document.createDocumentFragment()
   let childNodes = Array.from(dom.body.childNodes)
   result.template = childNodes
 }

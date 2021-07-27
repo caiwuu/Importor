@@ -11,7 +11,7 @@ import exec from './exec'
 
 export default class AppImport {
   __hook__ = new SyncHook()
-  __bootstrap__ = null
+  __registerLifeCycle__ = null
   __mounted__ = null
   __unmounted__ = null
   __beforeCreate__ = null
@@ -21,9 +21,9 @@ export default class AppImport {
   constructor(config = {}) {
     let conf = Object.assign(defaultConfig,config)
     window.webpackJsonpLength = window.webpackJsonp.length
-    this.__hook__.tap('registerApp', conf.registerApp)
     this.init()
-    // 注入生命周期（vue）
+    this.__hook__.tap('registerApp', conf.registerApp)
+    // 注入生命周期
     this.on('registerLifeCycle', conf.lifeCycle)
   }
   init() {
@@ -33,7 +33,6 @@ export default class AppImport {
         exec(parseredResources, el, app, entry, option, this.__hook__)
       } else {
         let resources = await htmlLoader(entry, option)
-        console.log(resources)
         resourceParser(resources, entry, option, el, this).then((parseredResources) => {
           exec(parseredResources, el, app, entry, option, this.__hook__)
           this.__cache__[entry] = parseredResources
@@ -53,15 +52,15 @@ export default class AppImport {
       this.rollBcak(entry)
       this.__unmounted__ && this.__unmounted__(app, entry)
     })
-    // 副作用钩子,框架相关、平台相关的代码通过该钩子注入
+    // 生命周期注册
     this.__hook__.tap('registerLifeCycle', (fn) => {
-      this.__bootstrap__ = fn
+      this.__registerLifeCycle__ = fn
     })
     // 微应用创建之前
     this.__hook__.tap('beforeCreate', (fn) => {
       this.__beforeCreate__ = fn
     })
-    // 微应用创建但为挂载
+    // 微应用创建但未挂载
     this.__hook__.tap('created', (fn) => {
       this.__created__ = fn
     })
@@ -101,7 +100,7 @@ export default class AppImport {
     }
     if (component instanceof Promise) {
       return component.then((data) => {
-        this.__bootstrap__(data.default || data, entry, option, this.__hook__)
+        this.__registerLifeCycle__(data.default || data, entry, option, this.__hook__)
         return data
       })
     }
