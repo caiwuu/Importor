@@ -48,11 +48,11 @@ const routes = [
     name: 'Test3',
     component: () =>
       appImport(import('../views/Test3.vue'), 'app3', {
-        origin: 'http://localhost:8081',
+        origin: 'http://192.168.1.2:8081',
         cssScope: true,
-        proxy: true,
-        // active: 'about3',
-        prefix: '',
+        proxy: false,
+        activeRoute: 'home3',
+        // prefix: '',
       }),
   },
 ]

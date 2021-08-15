@@ -6,7 +6,7 @@
  * @LastEditTime: 2021-07-20 11:11:32
  */
 
-const initCode = `const window = this;`
+const initCode = `const window = this;const self = this;`
 
 function execCode(src) {
   src = `with (proxyTarget){\n ${initCode}\n${src}\n}`
@@ -17,12 +17,22 @@ function proxyTarget(target, app, entry, option, hook) {
   let window = {
     webpackJsonp: null,
     webpackHotUpdate: null,
-    BaseApp: app,
+    __BaseApp__: app,
+    __isSandBox__: true,
     registerApp: (childApp) => {
       hook.call('registerApp', childApp, entry, option)
     },
   }
-  let ignoreList = ['setTimeout', 'clearTimeout', 'setInterval', 'requestAnimationFrame', 'cancelAnimationFrame', 'addEventListener', 'getComputedStyle']
+  let ignoreList = [
+    'setTimeout',
+    'clearTimeout',
+    'setInterval',
+    'requestAnimationFrame',
+    'cancelAnimationFrame',
+    'addEventListener',
+    'getComputedStyle',
+    'postMessage',
+  ]
   let proxyTarget = new Proxy(target, {
     get(target, key) {
       if (key === Symbol.unscopables) {
@@ -32,18 +42,15 @@ function proxyTarget(target, app, entry, option, hook) {
         return Reflect.get(target, key).bind(null)
       }
       if (key === 'window' || key === 'self') {
-        console.log('get window')
         return window
       }
       if (key === 'WINDOW') {
-        console.log('get WINDOW')
         return target
       }
       if (key === 'webpackJsonp') {
         return Reflect.get(window, key)
       }
       if (key === 'webpackHotUpdate') {
-        console.log(Reflect.get(target, key))
         return Reflect.get(target, key)
       }
       return Reflect.get(window, key) || Reflect.get(target, key)
@@ -52,7 +59,6 @@ function proxyTarget(target, app, entry, option, hook) {
       return true
     },
     set(target, key, value) {
-      // console.log(`setter:${key}=${value}`)
       Reflect.set(window, key, value)
       return true
     },

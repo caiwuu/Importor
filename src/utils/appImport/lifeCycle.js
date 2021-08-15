@@ -2,7 +2,7 @@
  * @Author: caiwu
  * @Date: 2021-04-10 22:47:07
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-07-25 22:26:00
+ * @Last Modified time: 2021-08-15 17:24:45
  */
 export default function initLifecycle(vueOptions, entry, option, hook) {
   let created = vueOptions.created

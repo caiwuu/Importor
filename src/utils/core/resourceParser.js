@@ -11,7 +11,6 @@ export default async function resourceParser(resources, entry, option, el, ctx) 
   const preLoadScript = resources.preLoads.filter((ele) => /.*\.js$/.test(ele.href))
   preLoads = dealPreloads(resources.preLoads, el)
   styles = await dealStyles(resources.styles, option, el)
-  console.log([...preLoadScript, ...resources.scripts])
   scripts = await dealScripts([...preLoadScript, ...resources.scripts])
   return { preLoads, styles, template: resources.template, scripts }
 }
@@ -66,7 +65,6 @@ function dealStyles(styles, option, el) {
     })
 
     return Promise.all(promiseList).then((res) => {
-      console.log(res)
       let innerHTML, className, style
       className = typeof option.cssScope === 'string' ? option.cssScope : uuid()
       innerHTML = res.join('')
