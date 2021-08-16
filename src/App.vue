@@ -1,3 +1,10 @@
+<!--
+ * @Description: 
+ * @Author: caiwu
+ * @CreateDate: 
+ * @LastEditor: 
+ * @LastEditTime: 2021-08-16 17:21:44
+-->
 <template>
   <div id="app2" style="height:100vh;overflow: scroll;">
     <div id="nav">

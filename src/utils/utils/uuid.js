@@ -1,13 +1,10 @@
+/*
+ * @Description: 
+ * @Author: caiwu
+ * @CreateDate: 
+ * @LastEditor: 
+ * @LastEditTime: 2021-08-16 16:36:52
+ */
 export default function uuid() {
-  var s = []
-  var hexDigits = '0123456789abcdefghijklmnopqrstuvwxyz'
-  for (var i = 0; i < 36; i++) {
-    s[i] = hexDigits.substr(Math.floor(Math.random() * 34), 1)
-  }
-  s[14] = '4'
-  s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1)
-  s[8] = s[13] = s[18] = s[23] = '-'
-
-  var uuid = s.join('')
-  return uuid
+  return  ([1e3] + -1e3 + -4e3 + -8e3).replace(/[018]/g, c =>(c ^(crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
 }

@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-07-27 09:56:57
+ * @LastEditTime: 2021-08-16 14:17:48
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -48,7 +48,7 @@ const routes = [
     name: 'Test3',
     component: () =>
       appImport(import('../views/Test3.vue'), 'app3', {
-        origin: 'http://192.168.1.2:8081',
+        origin: 'http://localhost:8081',
         cssScope: true,
         proxy: false,
         activeRoute: 'home3',
