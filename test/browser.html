@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate: 
  * @LastEditor: 
- * @LastEditTime: 2021-08-16 17:16:05
+ * @LastEditTime: 2021-08-17 18:53:55
 -->
 <!DOCTYPE html>
 <html>
@@ -19,18 +19,40 @@
   </div>
 </body>
 <script>
+  function guardEvent (e) {
+  // don't redirect with control keys
+  if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey){
+    console.log(1);
+    return
+  } 
+  // don't redirect when preventDefault called
+  if (e.defaultPrevented){
+    console.log(2);
+    return
+  } 
+  // don't redirect on right click
+  if (e.button !== undefined && e.button !== 0){
+    console.log(3);
+    return
+  }
+  // don't redirect if `target="_blank"`
+  if (e.currentTarget && e.currentTarget.getAttribute) {
+    const target = e.currentTarget.getAttribute('target')
+    if (/\b_blank\b/i.test(target)){
+      console.log(4);
+      return
+    }
+  }
+  // this may be a Weex event which doesn't have this method
+  if (e.preventDefault) {
+    console.log(5);
+    e.preventDefault()
+  }
+  return true
+}
   var linkList = document.querySelectorAll('a[href]')
     linkList.forEach(el => {
-        el.addEventListener('click', function(e){
-            var hr = el.getAttribute('href')
-            if(hr==='#bbb'){
-              // e.preventDefault();
-              history.pushState(null, '', el.getAttribute('href'));
-            }else{
-              // history.pushState(null, '', el.getAttribute('href'));
-              e.target.click()
-            }
-        })
+        el.addEventListener('click', guardEvent)
     })
  window.addEventListener('hashchange',()=>{console.log(1111)});
  window.addEventListener('hashchange',()=>{console.log(2222)});

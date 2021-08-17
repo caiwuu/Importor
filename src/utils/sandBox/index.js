@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-07-20 11:11:32
+ * @LastEditTime: 2021-08-17 21:16:02
  */
 
 const initCode = `const window = this;const self = this;`
@@ -33,14 +33,33 @@ function proxyTarget(target, app, entry, option, hook) {
     'getComputedStyle',
     'postMessage',
   ]
+  let ignoreList2 = [
+    'Object',
+    'eval',
+    'String',
+    'Number',
+    'Function',
+    'Array',
+    'Promise',
+    'Date'
+  ]
   let proxyTarget = new Proxy(target, {
     get(target, key) {
       if (key === Symbol.unscopables) {
         return undefined
       }
-      if (ignoreList.includes(key)) {
+      if (ignoreList2.includes(key)) {
+        return Reflect.get(target, key)
+      }
+      const value = Reflect.get(target, key)
+      if(isNative(value)){
+        console.log(key);
+        console.log(value.toString());
         return Reflect.get(target, key).bind(null)
       }
+      // if (ignoreList.includes(key)) {
+      //   return Reflect.get(target, key).bind(null)
+      // }
       if (key === 'window' || key === 'self') {
         return window
       }
@@ -72,4 +91,20 @@ function proxyTarget(target, app, entry, option, hook) {
 export default function createSandbox(src, target, app, entry, option, hook) {
   let proxy = proxyTarget(target, app, entry, option, hook)
   execCode(src).call(proxy, proxy)
+}
+
+const reRegExpChar = /[\\^$.*+?()[\]{}|]/g
+
+function isFunction(value) {
+  const type = typeof value
+  return value != null && type === 'function'
+}
+
+const reIsNative = RegExp(`^${
+  Function.prototype.toString.call(Object.prototype.hasOwnProperty)
+    .replace(reRegExpChar, '\\$&')
+    .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?')
+}$`)
+function isNative(value) {
+  return isFunction(value) && reIsNative.test(value)
 }

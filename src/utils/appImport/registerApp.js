@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-07-27 11:09:48
+ * @LastEditTime: 2021-08-17 13:49:40
  */
 export default function registerApp(app, entry, option) {
   const activeRoute = option.activeRoute ? option.activeRoute : entry
@@ -16,11 +16,11 @@ export default function registerApp(app, entry, option) {
     //   const aaaa = `#/${prevRoute}/${activeRoute}`
     //   history.pushState({}, '', aaaa)
     // })
-    Promise.resolve().then(() => {
-      console.log(window.location.hash)
-      console.log(window.location.hash + '/eeeee')
-      const aaaa = `#/${prevRoute}/${activeRoute}`
-      history.pushState({}, '', aaaa)
-    })
+    // Promise.resolve().then(() => {
+    //   console.log(window.location.hash)
+    //   console.log(window.location.hash + '/eeeee')
+    //   const aaaa = `#/${prevRoute}/${activeRoute}`
+    //   history.pushState({}, '', aaaa)
+    // })
   }
 }

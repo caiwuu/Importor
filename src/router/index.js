@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-08-16 14:17:48
+ * @LastEditTime: 2021-08-17 20:29:04
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -51,7 +51,7 @@ const routes = [
         origin: 'http://localhost:8081',
         cssScope: true,
         proxy: false,
-        activeRoute: 'home3',
+        activeRoute: 'about3',
         // prefix: '',
       }),
   },
