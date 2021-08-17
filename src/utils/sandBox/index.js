@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-08-17 21:16:02
+ * @LastEditTime: 2021-08-17 21:29:46
  */
 
 const initCode = `const window = this;const self = this;`
@@ -23,7 +23,7 @@ function proxyTarget(target, app, entry, option, hook) {
       hook.call('registerApp', childApp, entry, option)
     },
   }
-  let ignoreList = [
+  let ignoreList2 = [
     'setTimeout',
     'clearTimeout',
     'setInterval',
@@ -33,7 +33,7 @@ function proxyTarget(target, app, entry, option, hook) {
     'getComputedStyle',
     'postMessage',
   ]
-  let ignoreList2 = [
+  let ignoreList = [
     'Object',
     'eval',
     'String',
@@ -48,18 +48,13 @@ function proxyTarget(target, app, entry, option, hook) {
       if (key === Symbol.unscopables) {
         return undefined
       }
-      if (ignoreList2.includes(key)) {
+      if (ignoreList.includes(key)) {
         return Reflect.get(target, key)
       }
       const value = Reflect.get(target, key)
       if(isNative(value)){
-        console.log(key);
-        console.log(value.toString());
         return Reflect.get(target, key).bind(null)
       }
-      // if (ignoreList.includes(key)) {
-      //   return Reflect.get(target, key).bind(null)
-      // }
       if (key === 'window' || key === 'self') {
         return window
       }
