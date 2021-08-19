@@ -9,7 +9,7 @@ module.exports = {
   outputDir: 'app3',
   publicPath: '/app3',
   devServer: {
-    host: '0.0.0.0',
+    port: '8081',
     headers: {
       'Access-Control-Allow-Origin': '*',
     },

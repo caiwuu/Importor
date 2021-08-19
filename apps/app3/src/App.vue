@@ -8,8 +8,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/home3">Home</router-link> |
-      <router-link to="/www/app3">About</router-link>
+      <router-link to="/app3">Home</router-link> |
+      <router-link to="/about3">About</router-link>
     </div>
     <router-view />
   </div>

@@ -7,7 +7,8 @@
 -->
 <template>
   <div class="about">
-    <h1>这是一个微应用，它是独立部署的，可独立访问 <a href="http://49.234.27.60/app3" target="_blank">app3</a></h1>
-    
+    <h1>这是一个微应用，</h1>
+    <h1>它是独立部署的，</h1>
+    <h1>可独立访问 <a href="http://localhost:8081/app3/" target="_blank">http://localhost:8081/app3</a></h1>
   </div>
 </template>
