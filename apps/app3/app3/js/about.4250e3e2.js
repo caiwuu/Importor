@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["about"],{f820:function(t,e,a){"use strict";a.r(e);var n=function(){var t=this,e=t.$createElement;t._self._c;return t._m(0)},r=[function(){var t=this,e=t.$createElement,a=t._self._c||e;return a("div",{staticClass:"about"},[a("h1",[t._v("这是一个微应用，它是独立部署的，可独立访问 "),a("a",{attrs:{href:"http://49.234.27.60/app3",target:"_blank"}},[t._v("app3")])])])}],s=a("2877"),l={},u=Object(s["a"])(l,n,r,!1,null,null,null);e["default"]=u.exports}}]);
+//# sourceMappingURL=about.4250e3e2.js.map
