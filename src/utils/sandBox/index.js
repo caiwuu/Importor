@@ -3,26 +3,14 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-08-17 23:14:39
+ * @LastEditTime: 2021-08-20 18:24:41
  */
-const reRegExpChar = /[\\^$.*+?()[\]{}|]/g
-const reIsNative = RegExp(`^${
-  Function.prototype.toString.call(Object.prototype.hasOwnProperty)
-    .replace(reRegExpChar, '\\$&')
-    .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?')
-}$`)
-const initCode = `const window = this;const self = this;`
+import isNative from '../utils/isNative'
 
-function isFunction(value) {
-  const type = typeof value
-  return value != null && type === 'function'
-}
-function isNative(value) {
-  return isFunction(value) && reIsNative.test(value)
-}
-function execCode(src) {
-  src = `with (proxyTarget){\n ${initCode}\n${src}\n}`
-  return new Function('proxyTarget', src)
+const initCode = `const window = this;const self = this;`
+function execCode(code) {
+  code = `with (proxyTarget){\n ${initCode}\n${code}\n}`
+  return new Function('proxyTarget', code)
 }
 
 function proxyTarget(target, app, entry, option, hook) {
@@ -84,7 +72,7 @@ function proxyTarget(target, app, entry, option, hook) {
   })
   return proxyTarget
 }
-export default function createSandbox(src, target, app, entry, option, hook) {
+export default function createSandbox(code, target = window || this || self, app = {}, entry, option= {}, hook) {
   let proxy = proxyTarget(target, app, entry, option, hook)
-  execCode(src).call(proxy, proxy)
+  execCode(code).call(proxy, proxy)
 }

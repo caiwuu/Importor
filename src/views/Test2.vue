@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate: 
  * @LastEditor: 
- * @LastEditTime: 2021-04-08 19:04:55
+ * @LastEditTime: 2021-08-18 10:25:26
 -->
 <template>
   <div class="about" style="position: relative; width: 100%; height: 900px">
@@ -13,7 +13,7 @@
 </template>
 <script>
   export default {
-    name: 'ABOUT',
+    name: 'TEXT2',
     data() {
       return {
         a: 1,

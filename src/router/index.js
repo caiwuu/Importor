@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-08-17 20:29:04
+ * @LastEditTime: 2021-08-18 10:47:35
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -16,7 +16,6 @@ let { appImport } = new AppImport()
   .on('unmounted', (vm, entry) => {
     console.log(entry + ' in unmounted')
   })
-Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
@@ -57,6 +56,20 @@ const routes = [
   },
 ]
 
+// window.replaceState = window.history.replaceState
+// window.history.replaceState = function(state, title, url){
+//   console.log(state, title, url);
+//   window.replaceState(state, title, url)
+// }
+
+// window.pushState = window.history.pushState
+// window.history.pushState = function(state, title, url){
+//   console.log(state, title, url);
+//   window.pushState(state, title, url)
+// }
+console.log( process.env.BASE_URL);
+
+Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'hash',
   base: process.env.BASE_URL,
