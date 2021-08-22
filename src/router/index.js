@@ -6,7 +6,8 @@
  * @LastEditTime: 2021-08-18 10:47:35
  */
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+// import VueRouter from 'vue-router'
+import VueRouter from '../../test/vue-router.esm.js'
 import Home from '../views/Home.vue'
 import AppImport from '@/utils/appImport'
 let { appImport } = new AppImport()
@@ -67,7 +68,7 @@ const routes = [
 //   console.log(state, title, url);
 //   window.pushState(state, title, url)
 // }
-console.log( process.env.BASE_URL);
+console.log(process.env.BASE_URL)
 
 Vue.use(VueRouter)
 const router = new VueRouter({
