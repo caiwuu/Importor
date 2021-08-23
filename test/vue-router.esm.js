@@ -1214,7 +1214,7 @@ var Link = {
         data.on = on
       }
     }
-
+    console.log(this.tag, data, this.$slots.default);
     return h(this.tag, data, this.$slots.default)
   },
 }
@@ -1936,7 +1936,7 @@ function pushState(url, replace) {
       history.replaceState(stateCopy, '', url)
     } else {
       console.log('no--replace')
-      history.pushState({ key: setStateKey(genStateKey()) }, '', url)
+      // history.pushState({ key: setStateKey(genStateKey()) }, '', url)
     }
   } catch (e) {
     window.location[replace ? 'replace' : 'assign'](url)
@@ -2667,6 +2667,7 @@ var HashHistory = /*@__PURE__*/ (function(History) {
   }
 
   HashHistory.prototype.ensureURL = function ensureURL(push) {
+    console.log('exec--ensureURL');
     var current = this.current.fullPath
     if (getHash() !== current) {
       push ? pushHash(current) : replaceHash(current)
