@@ -3,10 +3,11 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-07-15 16:56:09
+ * @LastEditTime: 2021-08-25 17:23:36
  */
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+// import VueRouter from 'vue-router'
+import VueRouter from './vue-router.esm'
 import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)

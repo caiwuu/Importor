@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate: 
  * @LastEditor: 
- * @LastEditTime: 2021-07-15 15:44:00
+ * @LastEditTime: 2021-08-25 17:15:31
 -->
 <template>
   <div id="app">
@@ -20,6 +20,7 @@
       if (window.__isSandBox__) {
         // eslint-disable-next-line no-undef
         registerApp(this)
+        console.log(window.history,"090909090");
       }
     },
   }

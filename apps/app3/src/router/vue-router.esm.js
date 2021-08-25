@@ -2296,7 +2296,6 @@ History.prototype.confirmTransition = function confirmTransition(route, onComple
   )
 
   var iterator = function(hook, next) {
-    console.log(this$1.pending !== route);
     if (this$1.pending !== route) {
       return abort(createNavigationCancelledError(current, route))
     }
@@ -2333,6 +2332,8 @@ History.prototype.confirmTransition = function confirmTransition(route, onComple
     var enterGuards = extractEnterGuards(activated)
     var queue = enterGuards.concat(this$1.router.resolveHooks)
     runQueue(queue, iterator, function() {
+      console.log(this$1);
+      console.log(this$1.pending !== route,this$1.pending,route);
       if (this$1.pending !== route) {
         return abort(createNavigationCancelledError(current, route))
       }

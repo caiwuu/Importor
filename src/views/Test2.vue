@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate: 
  * @LastEditor: 
- * @LastEditTime: 2021-08-18 10:25:26
+ * @LastEditTime: 2021-08-25 17:11:32
 -->
 <template>
   <div class="about" style="position: relative; width: 100%; height: 900px">
@@ -19,6 +19,10 @@
         a: 1,
       }
     },
-    created() {},
+    created() {
+      setTimeout(()=>{
+        this.$router.push('/Test3')
+      })
+    },
   }
 </script>

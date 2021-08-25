@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-08-20 18:24:41
+ * @LastEditTime: 2021-08-25 17:22:04
  */
 import isNative from '../utils/isNative'
 
@@ -31,7 +31,8 @@ function proxyTarget(target, app, entry, option, hook) {
     'Function',
     'Array',
     'Promise',
-    'Date'
+    'Date',
+    'RegExp'
   ]
   let proxyTarget = new Proxy(target, {
     get(target, key) {
