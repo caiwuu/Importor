@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-08-17 13:49:40
+ * @LastEditTime: 2021-08-26 17:12:52
  */
 export default function registerApp(app, entry, option) {
   const activeRoute = option.activeRoute ? option.activeRoute : entry

@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate: 
  * @LastEditor: 
- * @LastEditTime: 2021-08-18 10:25:31
+ * @LastEditTime: 2021-08-26 17:16:35
 -->
 <template>
   <div class="about" style="position: relative; width: 100%; height: 900px">
@@ -19,6 +19,8 @@
         a: 1,
       }
     },
-    created() {},
+    created() {
+      console.log(this);
+    },
   }
 </script>

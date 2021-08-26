@@ -1104,12 +1104,10 @@ var Link = {
     var ariaCurrentValue = classes[exactActiveClass] ? this.ariaCurrentValue : null
 
     var handler = function(e) {
-      console.log('exec--handler')
       if (guardEvent(e)) {
         if (this$1.replace) {
           router.replace(location, noop)
         } else {
-          console.log('exec--push')
           router.push(location, noop)
         }
       }
@@ -1214,7 +1212,6 @@ var Link = {
         data.on = on
       }
     }
-    console.log(this.tag, data, this.$slots.default);
     return h(this.tag, data, this.$slots.default)
   },
 }
@@ -1926,17 +1923,14 @@ function pushState(url, replace) {
   // try...catch the pushState call to get around Safari
   // DOM Exception 18 where it limits to 100 pushState calls
   var history = window.history
-  console.log(history)
   try {
     if (replace) {
-      console.log('has--replace')
       // preserve existing history state as it could be overriden by the user
       var stateCopy = extend({}, history.state)
       stateCopy.key = getStateKey()
       history.replaceState(stateCopy, '', url)
     } else {
-      console.log('no--replace')
-      // history.pushState({ key: setStateKey(genStateKey()) }, '', url)
+      history.pushState({ key: setStateKey(genStateKey()) }, '', url)
     }
   } catch (e) {
     window.location[replace ? 'replace' : 'assign'](url)
@@ -1944,7 +1938,6 @@ function pushState(url, replace) {
 }
 
 function replaceState(url) {
-  console.log('exec--replaceState')
   pushState(url, true)
 }
 
@@ -2296,7 +2289,6 @@ History.prototype.confirmTransition = function confirmTransition(route, onComple
   )
 
   var iterator = function(hook, next) {
-    console.log(this$1.pending !== route);
     if (this$1.pending !== route) {
       return abort(createNavigationCancelledError(current, route))
     }
@@ -2635,7 +2627,6 @@ var HashHistory = /*@__PURE__*/ (function(History) {
 
     var ref = this
     var fromRoute = ref.current
-    console.log('HashHistory.prototype.push')
     this.transitionTo(
       location,
       function(route) {
@@ -2668,7 +2659,6 @@ var HashHistory = /*@__PURE__*/ (function(History) {
   }
 
   HashHistory.prototype.ensureURL = function ensureURL(push) {
-    console.log('exec--ensureURL');
     var current = this.current.fullPath
     if (getHash() !== current) {
       push ? pushHash(current) : replaceHash(current)
@@ -2723,7 +2713,6 @@ function getUrl(path) {
 
 function pushHash(path) {
   if (supportsPushState) {
-    console.log('has--supportsPushState--pushHash')
     pushState(getUrl(path))
   } else {
     window.location.hash = path
@@ -2732,7 +2721,6 @@ function pushHash(path) {
 
 function replaceHash(path) {
   if (supportsPushState) {
-    console.log('has--supportsPushState--replaceHash')
     replaceState(getUrl(path))
   } else {
     window.location.replace(getUrl(path))
@@ -2921,7 +2909,6 @@ VueRouter.prototype.init = function init(app /* Vue component instance */) {
     }
     history.transitionTo(history.getCurrentLocation(), setupListeners, setupListeners)
   }
-
   history.listen(function(route) {
     this$1.apps.forEach(function(app) {
       app._route = route

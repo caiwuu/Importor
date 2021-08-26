@@ -3,23 +3,26 @@
  * @Author: caiwu
  * @CreateDate: 
  * @LastEditor: 
- * @LastEditTime: 2021-08-25 17:23:10
+ * @LastEditTime: 2021-08-26 17:12:18
  */
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
 
-var pushState = window.history.__proto__.pushState
-var replaceState = window.history.__proto__.replaceState
-window.history.__proto__.pushState = function(...agrgs) {
-  console.log(1)
-  pushState(...agrgs)
-}
-window.history.__proto__.replaceState = function(...agrgs) {
-  console.log(2)
-  replaceState(...agrgs)
-}
+window.history.pushState = (function(native){
+  return function(...agrgs){
+    console.log("=======11111=============")
+    native(...agrgs)
+  }
+})(window.history.pushState)
+
+window.history.replaceState = (function(native){
+  return function(...agrgs){
+    console.log('========22222222222=======')
+    native(...agrgs)
+  }
+})(window.history.replaceState)
 
 Vue.config.productionTip = false
 console.log(Vue.util)

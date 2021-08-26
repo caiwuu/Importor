@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate: 
  * @LastEditor: 
- * @LastEditTime: 2021-08-25 17:15:31
+ * @LastEditTime: 2021-08-26 17:10:52
 -->
 <template>
   <div id="app">
@@ -19,8 +19,11 @@
     created() {
       if (window.__isSandBox__) {
         // eslint-disable-next-line no-undef
+        console.log(window,"==========");
+        console.log(window.history,"++++++++++");
+        console.log(window.window.history===window.history);
+        this.hhh = window.history
         registerApp(this)
-        console.log(window.history,"090909090");
       }
     },
   }

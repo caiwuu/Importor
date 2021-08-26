@@ -3,7 +3,7 @@
  * @Author: caiwu
  * @CreateDate:
  * @LastEditor:
- * @LastEditTime: 2021-08-18 10:47:35
+ * @LastEditTime: 2021-08-26 15:47:05
  */
 import Vue from 'vue'
 // import VueRouter from 'vue-router'
@@ -33,6 +33,11 @@ const routes = [
         proxy: false,
       }),
   },
+  // {
+  //   path: '/Test1',
+  //   name: 'Test1',
+  //   component: () =>import('../views/Test1.vue')
+  // },
   {
     path: '/Test2',
     name: 'Test',
@@ -56,19 +61,6 @@ const routes = [
       }),
   },
 ]
-
-// window.replaceState = window.history.replaceState
-// window.history.replaceState = function(state, title, url){
-//   console.log(state, title, url);
-//   window.replaceState(state, title, url)
-// }
-
-// window.pushState = window.history.pushState
-// window.history.pushState = function(state, title, url){
-//   console.log(state, title, url);
-//   window.pushState(state, title, url)
-// }
-console.log(process.env.BASE_URL)
 
 Vue.use(VueRouter)
 const router = new VueRouter({
