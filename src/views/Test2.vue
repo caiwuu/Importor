@@ -16,13 +16,8 @@
     name: 'TEXT2',
     data() {
       return {
-        a: 1,
+        a: 1111,
       }
-    },
-    created() {
-      setTimeout(()=>{
-        this.$router.push('/Test3')
-      })
     },
   }
 </script>

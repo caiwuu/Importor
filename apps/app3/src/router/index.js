@@ -16,15 +16,15 @@ const routes = [
   {
     path: '/',
     name: 'index',
-    redirect: '/app3',
+    redirect: '/Test3/app3',
   },
   {
-    path: '/app3',
+    path: '/Test3/app3',
     name: 'Home',
     component: Home,
   },
   {
-    path: '/about3',
+    path: '/Test3/about3',
     name: 'About',
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },

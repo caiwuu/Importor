@@ -9,8 +9,8 @@ import Vue from 'vue'
 // import VueRouter from 'vue-router'
 import VueRouter from '../../test/vue-router.esm.js'
 import Home from '../views/Home.vue'
-import AppImport from '@/utils/appImport'
-let { appImport } = new AppImport()
+import ComponentImport from '@/utils/componentImport'
+let { componentImport } = new ComponentImport()
   .on('mounted', (vm, entry) => {
     console.log(entry + ' in mounted')
   })
@@ -27,7 +27,7 @@ const routes = [
     path: '/Test1',
     name: 'Test1',
     component: () =>
-      appImport(import('../views/Test1.vue'), 'app1', {
+      componentImport(import('../views/Test1.vue'), 'app1', {
         origin: 'http://49.234.27.60/',
         cssScope: true,
         proxy: false,
@@ -42,21 +42,21 @@ const routes = [
     path: '/Test2',
     name: 'Test',
     component: () =>
-      appImport(import('../views/Test2.vue'), 'app2', {
+      componentImport(import('../views/Test2.vue'), 'app2', {
         origin: 'http://49.234.27.60/',
         cssScope: true,
         proxy: false,
       }),
   },
   {
-    path: '/Test3',
+    path: '/Test3/*',
     name: 'Test3',
     component: () =>
-      appImport(import('../views/Test3.vue'), 'app3', {
+      componentImport(import('../views/Test3.vue'), 'app3', {
         origin: 'http://localhost:8081',
         cssScope: true,
         proxy: false,
-        activeRoute: 'about3',
+        activeRoute: '/Test3/about3',
         // prefix: '',
       }),
   },

@@ -8,8 +8,8 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/app3">Home</router-link> |
-      <router-link to="/about3">About</router-link>
+      <router-link to="/Test3/app3">Home</router-link> |
+      <router-link to="/Test3/about3">About</router-link>
     </div>
     <router-view />
   </div>
@@ -19,10 +19,7 @@
     created() {
       if (window.__isSandBox__) {
         // eslint-disable-next-line no-undef
-        console.log(window,"==========");
-        console.log(window.history,"++++++++++");
-        console.log(window.window.history===window.history);
-        this.hhh = window.history
+        // console.log(window.window)
         registerApp(this)
       }
     },

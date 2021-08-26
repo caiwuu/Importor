@@ -9,7 +9,7 @@
   <div id="app2" style="height:100vh;overflow: scroll;">
     <div id="nav">
       <router-link to="/">Home</router-link> | <router-link to="/Test1">TEST1</router-link>| <router-link to="/Test2">TEST2</router-link>|
-      <router-link to="/Test3">TEST3</router-link>
+      <router-link to="/Test3/">TEST3</router-link>
     </div>
     <router-view />
   </div>
