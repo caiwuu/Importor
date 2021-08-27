@@ -31,22 +31,23 @@ export default class ComponentImport {
         exec(parseredResources, el, app, entry, option, this.syncHook)
       } else {
         let resources = await htmlLoader(entry, option)
+        console.log(resources);
         resourceParser(resources, entry, option, el, this).then((parseredResources) => {
           exec(parseredResources, el, app, entry, option, this.syncHook)
           this.sourcesCache[entry] = parseredResources
         })
       }
     })
-    this.syncHook.tap('defBeforeCreateCb', (app, entry) => {
+    this.syncHook.tap('beforeCreateCb', (app, entry) => {
       this.beforeCreateCb && this.beforeCreateCb(app, entry)
     })
-    this.syncHook.tap('defCreatedCb', (app, entry) => {
+    this.syncHook.tap('createdCb', (app, entry) => {
       this.createdCb && this.createdCb(app, entry)
     })
-    this.syncHook.tap('defMountedCb', (app, entry) => {
+    this.syncHook.tap('mountedCb', (app, entry) => {
       this.mountedCb && this.mountedCb(app, entry)
     })
-    this.syncHook.tap('defUnmountedCb', (app, entry) => {
+    this.syncHook.tap('unmountedCb', (app, entry) => {
       this.rollBcak(entry)
       this.unmountedCb && this.unmountedCb(app, entry)
     })
@@ -86,7 +87,7 @@ export default class ComponentImport {
     this.syncHook.call(targetName, ...args)
     return this
   }
-  componentImport = function(component, entry, option) {
+  Import = function(component, entry, option) {
     // Return import without side effects if no entry is passed in
     if (!entry) {
       return component
@@ -96,6 +97,9 @@ export default class ComponentImport {
         this.initLifecycle(data.default || data, entry, option, this.syncHook)
         return data
       })
+    }else{
+      this.initLifecycle(component,entry, option, this.syncHook)
+      return component
     }
   }.bind(this)
 }

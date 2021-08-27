@@ -11,10 +11,14 @@ export default function htmlLoader(entry, option) {
     cssScope: false,
     proxy: false,
     activeRoute: '',
-    prefix: null,
+    prefix: '',
+    pathRewrite:{
+      '':''
+    }
   }
   defaultOpt = Object.assign(defaultOpt, option)
-  return fetch(entry)
+  let entryUrl = defaultOpt.proxy? entry : defaultOpt.origin
+  return fetch(entryUrl)
     .then((res) => res.text())
     .then((data) => {
       let parser = new DOMParser()
@@ -80,13 +84,15 @@ function templatePicker(dom, result) {
 }
 
 function markPath(src, entry, defaultOpt) {
-  return src
-    ? /^http(s){0,1}/.test(src)
-      ? src
-      : (defaultOpt.proxy
-          ? defaultOpt.prefix === undefined || defaultOpt.prefix === null
-            ? entry
-            : defaultOpt.prefix
-          : defaultOpt.origin) + src
-    : null
+  if(src){
+    if(/^http(s){0,1}/.test(src)){
+      return src
+    }else{
+      const prefix = defaultOpt.prefix === undefined || defaultOpt.prefix === null? entry : defaultOpt.prefix;
+      const replaceKey = Object.keys(defaultOpt.pathRewrite)[0] || '', replaceValue = Object.values(defaultOpt.pathRewrite)[0] || '';
+      return defaultOpt.proxy ? prefix + src : defaultOpt.origin + src.replace(replaceKey,replaceValue)
+    }
+  }else{
+    return null
+  }
 }

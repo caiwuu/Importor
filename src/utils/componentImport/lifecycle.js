@@ -10,18 +10,18 @@ export default function initLifecycle(vueOptions, entry, option, hook) {
     this.$nextTick(() => {
       hook.call('bootstrap', entry, option, this.$el, this)
     })
-    hook.call('defBeforeCreateCb', this, entry)
+    hook.call('beforeCreateCb', this, entry)
   })
   vueOptions.created = async function() {
     created && created.call(this)
-    hook.call('defCreatedCb', this, entry)
+    hook.call('createdCb', this, entry)
   }
   vueOptions.mounted = function() {
     mounted && mounted.call(this)
-    hook.call('defMountedCb', this, entry)
+    hook.call('mountedCb', this, entry)
   }
   vueOptions.destroyed = function() {
     destroyed && destroyed.call(this)
-    hook.call('defUnmountedCb', this, entry)
+    hook.call('unmountedCb', this, entry)
   }
 }
