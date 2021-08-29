@@ -70,7 +70,21 @@ const routes = [
   },
 ]
 ```
-2.子应用webpack配置（app3为例）
+2.子应用注册到主应用中（app3为例）
+```javascript
+// App.vue
+ export default {
+    // __isSandBox__ 判断是否为沙箱环境
+    // registerApp 将app注册到主应用
+    // 这些属性、方法都是由沙箱提供，无需引入
+    created() {
+      if (window.__isSandBox__) {
+        registerApp(this)
+      }
+    },
+  }
+```
+3.子应用webpack配置（app3为例）
 
 ```javascript
 module.exports = {
@@ -84,7 +98,7 @@ module.exports = {
 }
 
 ```
-3.主应用配置本地开发代理（线上配置相应的nginx代理即可）
+4.主应用配置本地开发代理（线上配置相应的nginx代理即可）
 
 ```javascript
 module.exports = {
