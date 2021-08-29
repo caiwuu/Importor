@@ -2,9 +2,8 @@
  * @Author: caiwu
  * @Date: 2021-04-10 22:48:13
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-08-15 23:17:56
+ * @Last Modified time: 2021-08-29 23:58:39
  */
-
 export default function htmlLoader(entry, option) {
   let defaultOpt = {
     origin: window.location.origin,
@@ -12,17 +11,18 @@ export default function htmlLoader(entry, option) {
     proxy: false,
     activeRoute: '',
     prefix: '',
-    pathRewrite:{
-      '':''
-    }
+    pathRewrite: {
+      '': '',
+    },
   }
   defaultOpt = Object.assign(defaultOpt, option)
-  let entryUrl = defaultOpt.proxy? entry : defaultOpt.origin
+  let entryUrl = defaultOpt.proxy ? entry : defaultOpt.origin
   return fetch(entryUrl)
     .then((res) => res.text())
     .then((data) => {
       let parser = new DOMParser()
       let dom = parser.parseFromString(data, 'text/html')
+      console.log(dom.head.children)
       return domAnalysis(entry, dom, defaultOpt)
     })
 }
@@ -84,15 +84,16 @@ function templatePicker(dom, result) {
 }
 
 function markPath(src, entry, defaultOpt) {
-  if(src){
-    if(/^http(s){0,1}/.test(src)){
+  if (src) {
+    if (/^http(s){0,1}/.test(src)) {
       return src
-    }else{
-      const prefix = defaultOpt.prefix === undefined || defaultOpt.prefix === null? entry : defaultOpt.prefix;
-      const replaceKey = Object.keys(defaultOpt.pathRewrite)[0] || '', replaceValue = Object.values(defaultOpt.pathRewrite)[0] || '';
-      return defaultOpt.proxy ? prefix + src : defaultOpt.origin + src.replace(replaceKey,replaceValue)
+    } else {
+      const prefix = defaultOpt.prefix === undefined || defaultOpt.prefix === null ? entry : defaultOpt.prefix
+      const replaceKey = Object.keys(defaultOpt.pathRewrite)[0] || '',
+        replaceValue = Object.values(defaultOpt.pathRewrite)[0] || ''
+      return defaultOpt.proxy ? prefix + src : defaultOpt.origin + src.replace(replaceKey, replaceValue)
     }
-  }else{
+  } else {
     return null
   }
 }

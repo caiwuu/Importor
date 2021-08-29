@@ -7,7 +7,7 @@
  */
 export default function registerApp(app, entry, option) {
   const activeRoute = option.activeRoute ? option.activeRoute : entry
-  const prevRoute = window.location.hash.slice(2)
+  const prevRoute = window.location.hash.slice(1)
   if (prevRoute !== activeRoute) {
     app.$router.push(activeRoute)
   }

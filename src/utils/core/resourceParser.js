@@ -66,9 +66,15 @@ function dealStyles(styles, option, el) {
 
     return Promise.all(promiseList).then((res) => {
       let innerHTML, className, style
-      className = typeof option.cssScope === 'string' ? option.cssScope : uuid()
+      className = typeof option.cssScope === 'string' ? option.cssScope : 'u' + uuid()
+      el.classList.add(className)
       innerHTML = res.join('')
       style = document.createElement('style')
+      const reg = /(\s*)([\.|#]?.*?)(\s*{\s*[^\}]*?\s*\})/g
+      innerHTML = innerHTML.replace(reg, (match, $1, $2, $3) => {
+        if ($2 === 'body') $2 = ''
+        return `${$1} .${className} ${$2} ${$3}`
+      })
       style.innerHTML = innerHTML
       return [style]
     })

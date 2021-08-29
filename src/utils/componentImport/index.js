@@ -2,12 +2,13 @@
  * @Author: caiwu
  * @Date: 2021-04-10 22:45:01
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-08-27 01:15:55
+ * @Last Modified time: 2021-08-27 23:24:46
  */
 import { SyncHook } from '../hooks/syncHook'
 import { htmlLoader, resourceParser } from '../core'
 import defaultConfig from './config'
 import exec from './exec'
+import { markHeader, clearExtra } from './mark'
 
 export default class ComponentImport {
   syncHook = new SyncHook()
@@ -31,7 +32,8 @@ export default class ComponentImport {
         exec(parseredResources, el, app, entry, option, this.syncHook)
       } else {
         let resources = await htmlLoader(entry, option)
-        console.log(resources);
+        console.log(resources)
+        markHeader()
         resourceParser(resources, entry, option, el, this).then((parseredResources) => {
           exec(parseredResources, el, app, entry, option, this.syncHook)
           this.sourcesCache[entry] = parseredResources
@@ -71,17 +73,18 @@ export default class ComponentImport {
   rollBcak(entry) {
     let parseredResources = this.sourcesCache[entry] || {}
     ;(parseredResources.styles || [])
-      .filter((ele) => ele.mountedCb)
+      .filter((ele) => ele.__mounted__)
       .forEach((style) => {
-        style.mountedCb = false
+        style.__mounted__ = false
         style.remove()
       })
     ;(parseredResources.preLoads || [])
-      .filter((ele) => ele.mountedCb)
+      .filter((ele) => ele.__mounted__)
       .forEach((preLoad) => {
-        preLoad.mountedCb = false
+        preLoad.__mounted__ = false
         preLoad.remove()
       })
+    clearExtra()
   }
   on(targetName, ...args) {
     this.syncHook.call(targetName, ...args)
@@ -97,8 +100,8 @@ export default class ComponentImport {
         this.initLifecycle(data.default || data, entry, option, this.syncHook)
         return data
       })
-    }else{
-      this.initLifecycle(component,entry, option, this.syncHook)
+    } else {
+      this.initLifecycle(component, entry, option, this.syncHook)
       return component
     }
   }.bind(this)

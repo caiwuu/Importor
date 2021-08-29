@@ -23,17 +23,7 @@ function proxyTarget(target, app, entry, option, hook) {
       hook.call('registerApp', childApp, entry, option)
     },
   }
-  let ignoreList = [
-    'Object',
-    'eval',
-    'String',
-    'Number',
-    'Function',
-    'Array',
-    'Promise',
-    'Date',
-    'RegExp'
-  ]
+  let ignoreList = ['Object', 'eval', 'String', 'Number', 'Function', 'Array', 'Promise', 'Date', 'RegExp']
   let proxyTarget = new Proxy(target, {
     get(target, key) {
       if (key === Symbol.unscopables) {
@@ -43,8 +33,8 @@ function proxyTarget(target, app, entry, option, hook) {
         return Reflect.get(target, key)
       }
       const value = Reflect.get(target, key)
-      if(isNative(value)){
-        return Reflect.get(target, key).bind(null)
+      if (isNative(value)) {
+        return value.bind(null)
       }
       if (key === 'window' || key === 'self') {
         return window
@@ -73,7 +63,7 @@ function proxyTarget(target, app, entry, option, hook) {
   })
   return proxyTarget
 }
-export default function createSandbox(code, target = window || this || self, app = {}, entry, option= {}, hook) {
+export default function createSandbox(code, target = window || this || self, app = {}, entry, option = {}, hook) {
   let proxy = proxyTarget(target, app, entry, option, hook)
   execCode(code).call(proxy, proxy)
 }

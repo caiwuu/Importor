@@ -1,5 +1,6 @@
 import createSandbox from '@/utils/sandBox'
 export default function exec(parseredResources, el, app, entry, option, hook) {
+  console.log(parseredResources)
   let fragment = document.createDocumentFragment(),
     templateFragment = document.createDocumentFragment()
   parseredResources.template.forEach((childNode) => {

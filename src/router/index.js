@@ -70,11 +70,11 @@ const routes = [
       origin: 'http://localhost:8081/app3',
       cssScope: true,
       proxy: true,
-      activeRoute: '/Test3/about3',
+      activeRoute: '/Test3/app3',
       prefix: '',
-      pathRewrite:{
-        '/app3':''
-      }
+      pathRewrite: {
+        '/app3': '',
+      },
     }),
   },
 ]
