@@ -52,7 +52,7 @@ function scriptPicker(entry, dom, result, defaultOpt) {
 }
 // pcik styles from htmlEntry
 function stylePicker(entry, dom, result, defaultOpt) {
-  let styles = Array.from(dom.head.childNodes).filter((ele) => ['LINK', 'STYLE'].includes(ele.tagName))
+  let styles = Array.from(dom.head.children).filter((ele) => ['LINK', 'STYLE'].includes(ele.tagName))
   let origin = window.location.origin.replace(/\//g, '\\/')
   let reg = new RegExp(`(${origin})*(.*)`)
   styles.map((ele) => {
