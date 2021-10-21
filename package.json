@@ -22,11 +22,15 @@
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "rollup": "^2.58.0",
+    "rollup-plugin-alias": "^2.2.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   },
-  "files": ["importor","output"],
+  "files": [
+    "importor",
+    "output"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/caiwuu/Importor.git"

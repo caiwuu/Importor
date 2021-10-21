@@ -1,12 +1,22 @@
-import CustomError from '@/importor/error';
-import uuid from '@/importor/utils/uuid';
-import createSandbox from '@/importor/sandBox';
+/*
+ * @Author: caiwu
+ * @Date: 2021-04-10 22:48:51
+ * @Last Modified by:   caiwu
+ * @Last Modified time: 2021-04-10 22:48:51
+ */
+class customError extends Error {
+  constructor(name, message) {
+    super(message);
+    this.name = name;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
 
 /*
  * @Author: caiwu
  * @Date: 2021-04-10 22:49:03
  * @Last Modified by: caiwu
- * @Last Modified time: 2021-06-27 19:50:08
+ * @Last Modified time: 2021-10-22 01:13:39
  */
 class SyncHook {
   constructor(args) {
@@ -17,19 +27,22 @@ class SyncHook {
     if (!this.tasks[hookName]) {
       this.tasks[hookName] = task;
     } else {
-      throw CustomError(
+      throw customError(
         'SyncHookTapError',
         `A SyncHook named ${hookName} already exists, But you can run Instance.remove(hookName) before defining it `
-      );
+      )
     }
   }
   call(hookName, ...args) {
     if (!this.tasks[hookName]) {
-      throw new CustomError('SyncHookCallError', `The SyncHook named ${hookName} not exists;`);
+      throw new customError('SyncHookCallError', `The SyncHook named ${hookName} not exists;`)
     }
     if (this.args) {
       if (args.length < this.args.length) {
-        throw new CustomError('SyncHookCallError', `${this.args.length} arguments required;but ${args.length} provided`);
+        throw new customError(
+          'SyncHookCallError',
+          `${this.args.length} arguments required;but ${args.length} provided`
+        )
       }
       args = args.slice(0, this.args.length);
     }
@@ -37,7 +50,7 @@ class SyncHook {
   }
   remove(hookName) {
     if (!this.tasks[hookName]) {
-      throw new CustomError('SyncHookCallError', `The SyncHook named ${hookName} not exists;`);
+      throw new customError('SyncHookCallError', `The SyncHook named ${hookName} not exists;`)
     }
     this.tasks[hookName] = null;
   }
@@ -144,6 +157,17 @@ function markPath(src, entry, defaultOpt) {
 }
 
 /*
+ * @Description: 
+ * @Author: caiwu
+ * @CreateDate: 
+ * @LastEditor: 
+ * @LastEditTime: 2021-08-16 16:36:52
+ */
+function uuid() {
+  return  ([1e3] + -1e3 + -4e3 + -8e3).replace(/[018]/g, c =>(c ^(crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16));
+}
+
+/*
  * @Description:
  * @Author: caiwu
  * @CreateDate:
@@ -156,7 +180,7 @@ async function resourceParser(resources, entry, option, el, ctx) {
   preLoads = dealPreloads(resources.preLoads);
   styles = await dealStyles(resources.styles, option, el);
   scripts = await dealScripts([...preLoadScript, ...resources.scripts]);
-  return { preLoads, styles, template: resources.template, scripts };
+  return { preLoads, styles, template: resources.template, scripts }
 }
 function dealScripts(scripts) {
   let promiseList = [];
@@ -168,7 +192,7 @@ function dealScripts(scripts) {
             .then((res) => res.text())
             .then((data) => data)
             .catch((error) => {
-              throw new Error('dealScripts error:', error);
+              throw new Error('dealScripts error:', error)
             })
     );
   });
@@ -176,8 +200,8 @@ function dealScripts(scripts) {
   return Promise.all(promiseList).then((res) => {
     let code;
     code = res.join(';\n');
-    return code;
-  });
+    return code
+  })
 }
 function dealStyles(styles, option, el) {
   let styleList = [];
@@ -192,7 +216,7 @@ function dealStyles(styles, option, el) {
         style = Object.assign(style, ele);
       }
     });
-    return styleList;
+    return styleList
   } else {
     let promiseList = [];
     styles.forEach((ele) => {
@@ -203,7 +227,7 @@ function dealStyles(styles, option, el) {
               .then((res) => res.text())
               .then((data) => data)
               .catch((error) => {
-                throw new Error('dealStyles error:', error);
+                throw new Error('dealStyles error:', error)
               })
       );
     });
@@ -217,11 +241,11 @@ function dealStyles(styles, option, el) {
       const reg = /(\s*)([\.|#]?.*?)(\s*{\s*[^\}]*?\s*\})/g;
       innerHTML = innerHTML.replace(reg, (match, $1, $2, $3) => {
         if ($2 === 'body') $2 = '';
-        return `${$1} .${className} ${$2} ${$3}`;
+        return `${$1} .${className} ${$2} ${$3}`
       });
       style.innerHTML = innerHTML;
-      return [style];
-    });
+      return [style]
+    })
   }
 }
 function dealPreloads(preLoads) {
@@ -235,7 +259,7 @@ function dealPreloads(preLoads) {
     fragment.appendChild(link);
   });
   document.head.appendChild(fragment);
-  return links;
+  return links
 }
 
 /*
@@ -292,6 +316,96 @@ var defaultConfig = {
     registerApp,
     initLifecycle
 };
+
+/*
+ * @Description: 
+ * @Author: caiwu
+ * @CreateDate: 
+ * @LastEditor: 
+ * @LastEditTime: 2021-08-20 11:20:17
+ */
+const reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+const reIsNative = RegExp(`^${
+  Function.prototype.toString.call(Object.prototype.hasOwnProperty)
+    .replace(reRegExpChar, '\\$&')
+    .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?')
+}$`);
+function isFunction(value) {
+  const type = typeof value;
+  return value != null && type === 'function'
+}
+function isNative(value) {
+  return isFunction(value) && reIsNative.test(value)
+}
+
+/*
+ * @Description:
+ * @Author: caiwu
+ * @CreateDate:
+ * @LastEditor:
+ * @LastEditTime: 2021-08-26 16:30:13
+ */
+
+const initCode = `const window = this;const self = this;`;
+function execCode(code) {
+  code = `with (proxyTarget){\n ${initCode}\n${code}\n}`;
+  return new Function('proxyTarget', code)
+}
+
+function proxyTarget(target, app, entry, option, hook) {
+  let window = {
+    webpackJsonp: null,
+    webpackHotUpdate: null,
+    __BaseApp__: app,
+    __isSandBox__: true,
+    registerApp: (childApp) => {
+      hook.call('registerApp', childApp, entry, option);
+    },
+  };
+  let ignoreList = ['Object', 'eval', 'String', 'Number', 'Function', 'Array', 'Promise', 'Date', 'RegExp'];
+  let proxyTarget = new Proxy(target, {
+    get(target, key) {
+      if (key === Symbol.unscopables) {
+        return undefined
+      }
+      if (ignoreList.includes(key)) {
+        return Reflect.get(target, key)
+      }
+      const value = Reflect.get(target, key);
+      if (isNative(value)) {
+        return value.bind(null)
+      }
+      if (key === 'window' || key === 'self') {
+        return window
+      }
+      if (key === 'WINDOW') {
+        return target
+      }
+      if (key === 'webpackJsonp') {
+        return Reflect.get(window, key)
+      }
+      if (key === 'webpackHotUpdate') {
+        return Reflect.get(target, key)
+      }
+      return Reflect.get(window, key) || Reflect.get(target, key)
+    },
+    has(target, key) {
+      return true
+    },
+    set(target, key, value) {
+      Reflect.set(window, key, value);
+      return true
+    },
+    defineProperty: function(target, prop, descriptor) {
+      return Reflect.defineProperty(window, prop, descriptor)
+    },
+  });
+  return proxyTarget
+}
+function createSandbox(code, target = window || this || self, app = {}, entry, option = {}, hook) {
+  let proxy = proxyTarget(target, app, entry, option, hook);
+  execCode(code).call(proxy, proxy);
+}
 
 function exec(parseredResources, el, app, entry, option, hook) {
   console.log(parseredResources);
