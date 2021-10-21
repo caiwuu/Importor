@@ -1,12 +1,13 @@
 {
-  "name": "app",
-  "version": "0.1.0",
-  "private": true,
+  "name": "importor",
+  "version": "1.0.0",
+  "main": "output/index.js",
   "scripts": {
-    "dev": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "main": "vue-cli-service serve",
+    "build-main": "vue-cli-service build",
     "app3": "cd apps/app3  && npm run dev",
-    "build-app3": "cd apps/app3  && npm run  build"
+    "build-app3": "cd apps/app3  && npm run  build",
+    "build": "npx rollup -c rollup.config.js"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -20,8 +21,25 @@
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+    "rollup": "^2.58.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
-  }
+  },
+  "files": ["importor","output"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caiwuu/Importor.git"
+  },
+  "keywords": [
+    "microFrontEnd",
+    "微前端",
+    "importor"
+  ],
+  "author": "caiwu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/caiwuu/Importor/issues"
+  },
+  "homepage": "https://github.com/caiwuu/Importor#readme"
 }

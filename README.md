@@ -27,7 +27,7 @@ Import是一款面向下一代web应用程序的轻量级微前端框架,使用I
 ```javascript
 // router.js
 // 实例化一个加载器，并且定义两个钩子函数，分别在子应用加载和卸载的时候执行
-import ComponentImport from '@/utils/componentImport'
+import ComponentImport from '@/importor/componentImport'
 let { Import } = new ComponentImport()
   .on('mounted', (vm, entry) => {
     console.log(entry + ' in mounted')

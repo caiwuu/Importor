@@ -5,19 +5,19 @@
  * @LastEditor:
  * @LastEditTime: 2021-08-27 17:50:29
  */
-import Vue from 'vue'
-// import VueRouter from 'vue-router'
-import VueRouter from '../../test/vue-router.esm.js'
-import TEST3 from '../views/Test3.vue'
-import Home from '../views/Home.vue'
-import ComponentImport from '@/utils/componentImport'
+import Vue from 'vue';
+import VueRouter from '../../test/vue-router.esm.js';
+import TEST3 from '../views/Test3.vue';
+import Home from '../views/Home.vue';
+// import ComponentImport from '@/importor/componentImport';
+import ComponentImport from '../../output/';
 let { Import } = new ComponentImport()
   .on('mounted', (vm, entry) => {
-    console.log(entry + ' in mounted')
+    console.log(entry + ' in mounted');
   })
   .on('unmounted', (vm, entry) => {
-    console.log(entry + ' in unmounted')
-  })
+    console.log(entry + ' in unmounted');
+  });
 const routes = [
   {
     path: '/',
@@ -77,13 +77,13 @@ const routes = [
       },
     }),
   },
-]
+];
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 const router = new VueRouter({
   mode: 'hash',
   base: process.env.BASE_URL,
   routes,
-})
+});
 
-export default router
+export default router;
