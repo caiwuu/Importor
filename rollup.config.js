@@ -1,7 +1,7 @@
 import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import babel from 'rollup-plugin-babel';
-import alias from 'rollup-plugin-alias';
+import babel from '@rollup/plugin-babel';
+import alias from '@rollup/plugin-alias';
 import { terser } from 'rollup-plugin-terser';
 
 export default {
@@ -21,7 +21,7 @@ export default {
     commonjs(),
     babel({
       exclude: 'node_modules/**',
-      runtimeHelpers: true,
+      babelHelpers: 'runtime',
       presets: [['@babel/preset-env']],
       plugins: ['@babel/transform-runtime', '@babel/plugin-proposal-class-properties'],
     }),
@@ -31,4 +31,4 @@ export default {
     }),
   ],
   external: [],
-}
+};
