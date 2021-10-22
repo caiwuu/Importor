@@ -125,6 +125,17 @@ module.exports = {
 }
 
 ```
+### 官方demo
+```
+git clone https://github.com/caiwuu/importor-demo.git
+cd  importor-demo
+npm i
+cd apps/app3
+npm i
+cd ../../
+npm run main
+npm run app3
+```
 ####  结束了，是不是感觉和平时开发没有什么太大的区别，这也正是Importor相对于其他微前端框架的一大特点
 
 ### ✨更多技术细节和框架文档将在正式版本发布后发布，敬请期待！✨

@@ -10,7 +10,7 @@ import VueRouter from '../../test/vue-router.esm.js';
 import TEST3 from '../views/Test3.vue';
 import Home from '../views/Home.vue';
 // import ComponentImport from '@/importor/componentImport';
-import ComponentImport from '../../output/';
+import ComponentImport from '../../output/index.js';
 let { Import } = new ComponentImport()
   .on('mounted', (vm, entry) => {
     console.log(entry + ' in mounted');
@@ -25,18 +25,13 @@ const routes = [
     component: Home,
   },
   {
-    path: '/Test1',
-    name: 'Test1',
-    component: () =>
-      Import(import('../views/Test1.vue'), 'app1', {
-        origin: 'http://49.234.27.60/app1',
-        cssScope: true,
-        proxy: true,
-      }),
+    path: '/TEST1',
+    name: 'TEST1',
+    component: () => import('../views/Test1.vue'),
   },
   {
-    path: '/Test2',
-    name: 'Test',
+    path: '/TEST2',
+    name: 'TEST2',
     component: () =>
       Import(import('../views/Test2.vue'), 'app2', {
         origin: 'http://49.234.27.60/app2',
@@ -64,13 +59,13 @@ const routes = [
 
   // 同步组件
   {
-    path: '/Test3/*',
-    name: 'Test3',
+    path: '/TEST3/*',
+    name: 'TEST3',
     component: Import(TEST3, 'app3', {
       origin: 'http://localhost:8081/app3',
       cssScope: true,
       proxy: true,
-      activeRoute: '/Test3/app3',
+      activeRoute: '/TEST3/home',
       prefix: '',
       pathRewrite: {
         '/app3': '',
