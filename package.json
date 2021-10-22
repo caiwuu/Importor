@@ -10,11 +10,10 @@
     "build": "npx rollup -c rollup.config.js"
   },
   "dependencies": {
-    "axios": "^0.21.1",
-    "caniuse-lite": "^1.0.30001270",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
-    "vuex": "^3.4.0"
+    "vuex": "^3.4.0",
+    "axios": "^0.21.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
@@ -24,14 +23,10 @@
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "core-js": "^3.18.3",
     "rollup": "^2.58.0",
     "rollup-plugin-alias": "^2.2.0",
-<<<<<<< HEAD
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-terser": "^7.0.2",
-=======
->>>>>>> 2af651c4e55f0f8ee8b65138bb4f45c1868a7e46
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
