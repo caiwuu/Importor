@@ -4,7 +4,7 @@
  * @Last Modified by: caiwu
  * @Last Modified time: 2021-06-27 19:50:08
  */
-import CustomError from '@/importor/error';
+import CustomError from '@/importor/error/index.js';
 export class SyncHook {
   constructor(args) {
     this.args = args;

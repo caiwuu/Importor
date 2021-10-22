@@ -1,7 +1,7 @@
-# Import
+# Importor
 
 ## 介绍
-Import是一款面向下一代web应用程序的轻量级微前端框架,使用Import可以使一个巨大的应用分业务分系统开发，单独集成，单独部署，最终通过Import构建成一个应用。
+Importor是一款面向下一代web应用程序的轻量级微前端框架,使用Importor可以使一个巨大的应用分业务分系统开发，单独集成，单独部署，最终通过Importor构建成一个应用。
 
 ### 关于“微前端”
 > 与使用不同 JavaScript 框架的多个团队构建现代 Web 应用程序的技术、策略和方法。—微前端
@@ -9,7 +9,7 @@ Import是一款面向下一代web应用程序的轻量级微前端框架,使用I
 
 微前端的概念，是在后端 server less 相关概念时候出现的，其实大致的思路是差不多的，每一个功能（服务）独立部署、独立运行，每一个模块都拆分成更小，更易于管理的 微应用
 
-### Import 有什么特点
+### Importor 有什么特点
 
 💃 上手简单，从始至终站在开发者的角度设计每一个功能
 
@@ -27,8 +27,8 @@ Import是一款面向下一代web应用程序的轻量级微前端框架,使用I
 ```javascript
 // router.js
 // 实例化一个加载器，并且定义两个钩子函数，分别在子应用加载和卸载的时候执行
-import ComponentImport from '@/importor/componentImport'
-let { Import } = new ComponentImport()
+import ComponentImportor from 'Importor'
+let { Importor } = new ComponentImportor()
   .on('mounted', (vm, entry) => {
     console.log(entry + ' in mounted')
   })
@@ -57,7 +57,7 @@ const routes = [
   {
     path: '/Test3/*',
     name: 'Test3',
-    component: Import(TEST3, 'app3', {
+    component: Importor(TEST3, 'app3', {
       origin: 'http://localhost:8081/app3',
       cssScope: true, // 是否开启css隔离
       proxy: true, // 是否走代理访问，推荐代理；直连要解决静态资源路径问题
@@ -125,6 +125,6 @@ module.exports = {
 }
 
 ```
-####  结束了，是不是感觉和平时开发没有什么太大的区别，这也正是Import相对于其他微前端框架的一大特点
+####  结束了，是不是感觉和平时开发没有什么太大的区别，这也正是Importor相对于其他微前端框架的一大特点
 
 ### ✨更多技术细节和框架文档将在正式版本发布后发布，敬请期待！✨

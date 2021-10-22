@@ -10,23 +10,33 @@
     "build": "npx rollup -c rollup.config.js"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
+    "axios": "^0.21.1",
+    "caniuse-lite": "^1.0.30001270",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
-    "vuex": "^3.4.0",
-    "axios": "^0.21.1"
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "core-js": "^3.18.3",
     "rollup": "^2.58.0",
+    "rollup-plugin-alias": "^2.2.0",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-terser": "^7.0.2",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   },
-  "files": ["importor","output"],
+  "files": [
+    "importor",
+    "output"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/caiwuu/Importor.git"

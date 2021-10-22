@@ -1,4 +1,4 @@
-import createSandbox from '@/importor/sandBox';
+import createSandbox from '@/importor/sandBox/index.js';
 export default function exec(parseredResources, el, app, entry, option, hook) {
   console.log(parseredResources);
   let fragment = document.createDocumentFragment(),

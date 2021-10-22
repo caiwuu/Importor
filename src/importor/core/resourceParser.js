@@ -5,7 +5,7 @@
  * @LastEditor:
  * @LastEditTime: 2021-07-16 17:10:43
  */
-import uuid from '@/importor/utils/uuid';
+import uuid from '@/importor/utils/uuid.js';
 export default async function resourceParser(resources, entry, option, el, ctx) {
   let preLoads, styles, scripts;
   const preLoadScript = resources.preLoads.filter((ele) => /.*\.js$/.test(ele.href));
